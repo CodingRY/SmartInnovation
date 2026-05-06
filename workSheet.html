@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Innovation Challenge</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --pdf-theme: #A7C7E7;       /* ฟ้าพาสเทล */
+            --canva-theme: #FFB7B2;     /* ชมพูพาสเทล */
+            --bg-pastel: #FDFCF0;       /* เหลืองนวลพาสเทล */
+            --text-dark: #5D5D5D;
+            --white: #ffffff;
+            --home-btn: #B2E2F2;       /* สีพาสเทลสำหรับปุ่มโฮม */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-pastel);
+            background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Header Section --- */
+        header {
+            padding: 0.5rem 1.5rem;
+            background: var(--white);
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ปุ่มกลับหน้าหลักสไตล์พาสเทล (ย้ายมาขวา) */
+        .btn-home {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background-color: var(--home-btn);
+            color: #4A4A4A;
+            text-decoration: none;
+            border-radius: 10px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-home:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            filter: brightness(1.02);
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--pdf-theme), var(--canva-theme));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        h1 {
+            font-family: 'Kanit', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .tab-group {
+            display: flex;
+            background: #EEEEEE;
+            padding: 4px;
+            border-radius: 12px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            padding: 6px 15px;
+            border: none;
+            background: transparent;
+            color: #777;
+            cursor: pointer;
+            border-radius: 10px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active.pdf-mode {
+            background: var(--pdf-theme);
+            color: white;
+            box-shadow: 0 4px 10px rgba(167, 199, 231, 0.4);
+        }
+
+        .tab-btn.active.canva-mode {
+            background: var(--canva-theme);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 183, 178, 0.4);
+        }
+
+        main {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-view {
+            width: 100%;
+            max-width: 1100px;
+            height: 100%;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid var(--white);
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .content-view.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            padding: 12px 20px;
+            border-radius: 15px;
+            color: white;
+            text-decoration: none;
+            font-family: 'Kanit', sans-serif;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-size: 0.95rem;
+        }
+
+        .fab:hover {
+            transform: translateY(-4px);
+            filter: brightness(1.05);
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 12px; padding: 1rem; }
+            .header-left, .header-right { width: 100%; justify-content: center; }
+            .tab-btn { padding: 6px 10px; font-size: 0.8rem; }
+            .fab { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="logo-icon">
+                <i data-lucide="sparkles" size="16"></i>
+            </div>
+            <h1>Smart Innovation</h1>
+        </div>
+
+        <div class="header-right">
+            <nav class="tab-group">
+                <button class="tab-btn active pdf-mode" id="btn-pdf" onclick="switchTab('pdf')">
+                    <i data-lucide="book-open" size="16"></i> Smart Innovation
+                </button>
+                <button class="tab-btn" id="btn-canva" onclick="switchTab('canva')">
+                    <i data-lucide="pencil-combined" size="16"></i> ใบกิจกรรม
+                </button>
+            </nav>
+
+            <a href="index.html" class="btn-home">
+                <i data-lucide="home" size="16"></i>
+                หน้าหลัก
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div id="pdf-container" class="content-view active">
+            <iframe src="https://drive.google.com/file/d/1jSxuk7FuoU0yzf7wuVsPSyNSHh3KuPUy/preview"></iframe>
+        </div>
+
+        <div id="canva-container" class="content-view">
+            <iframe src="https://www.canva.com/design/DAHI3J1BASY/7vlWZynDX-FHpfFkyzyI5A/view?embed" allowfullscreen></iframe>
+        </div>
+    </main>
+
+    <a id="dynamic-fab" href="https://drive.google.com/file/d/1jSxuk7FuoU0yzf7wuVsPSyNSHh3KuPUy/view?usp=sharing" target="_blank" class="fab" style="background: var(--pdf-theme);">
+        <i data-lucide="external-link" size="18"></i>
+        <span>เปิดแบบเต็มหน้าจอ</span>
+    </a>
+
+    <script>
+        lucide.createIcons();
+
+        function switchTab(mode) {
+            const pdfContainer = document.getElementById('pdf-container');
+            const canvaContainer = document.getElementById('canva-container');
+            const btnPdf = document.getElementById('btn-pdf');
+            const btnCanva = document.getElementById('btn-canva');
+            const fab = document.getElementById('dynamic-fab');
+
+            if (mode === 'pdf') {
+                pdfContainer.classList.add('active');
+                canvaContainer.classList.remove('active');
+                btnPdf.classList.add('active', 'pdf-mode');
+                btnCanva.classList.remove('active', 'canva-mode');
+                
+                fab.href = "https://drive.google.com/file/d/1jSxuk7FuoU0yzf7wuVsPSyNSHh3KuPUy/view?usp=sharing";
+                fab.style.background = "var(--pdf-theme)";
+                fab.querySelector('span').innerText = "เปิด PDF เต็มหน้าจอ";
+            } else {
+                canvaContainer.classList.add('active');
+                pdfContainer.classList.remove('active');
+                btnCanva.classList.add('active', 'canva-mode');
+                btnPdf.classList.remove('active', 'pdf-mode');
+
+                fab.href = "https://canva.link/uiabh6el83flwex";
+                fab.style.background = "var(--canva-theme)";
+                fab.querySelector('span').innerText = "เปิดทำใน Canva";
+            }
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

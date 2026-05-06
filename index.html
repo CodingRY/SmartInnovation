@@ -1,0 +1,2231 @@
+<!doctype html>
+<html lang="th">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arduino</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      background: #f5f5f5;
+      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
+      color: #333333;
+      height: 100%;
+    }
+
+    .main-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow-auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(90deg, #87ceeb 0%, #add8e6 50%, #b0e0e6 100%);
+      box-shadow: 0 4px 20px rgba(135, 206, 235, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      color: #ffffff;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a.active {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #a8d8f0 0%, #87ceeb 100%);
+      color: #2c5aa0;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    .btn-start {
+      display: inline-block;
+      background: #b0e0e6;
+      color: #2c5aa0;
+      padding: 0.75rem 2rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: 2px solid #87ceeb;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(135, 206, 235, 0.3);
+      background: #a0d8e8;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #2c7aa0;
+      font-weight: 700;
+    }
+
+    .section-intro {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .board-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15);
+      transition: all 0.3s;
+      border-top: 4px solid #87ceeb;
+    }
+
+    .board-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(135, 206, 235, 0.25);
+    }
+
+    .board-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #2c7aa0;
+    }
+
+    .board-card p {
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .step-list {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+
+    .step-list li {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #d4f1f9;
+      border-left: 4px solid #87ceeb;
+      border-radius: 4px;
+      line-height: 1.6;
+    }
+
+    .step-list li strong {
+      color: #2c7aa0;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15);
+      transition: all 0.3s;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(135, 206, 235, 0.2);
+      border-color: #87ceeb;
+    }
+
+    .project-icon {
+      background: linear-gradient(135deg, #a8d8f0 0%, #87ceeb 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .project-info {
+      padding: 1.5rem;
+    }
+
+    .project-info h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #2d3436;
+    }
+
+    .project-info p {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .btn-learn {
+      display: inline-block;
+      color: #2c7aa0;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 1rem;
+      transition: color 0.3s;
+    }
+
+    .btn-learn:hover {
+      color: #1a4f70;
+    }
+
+    /* Footer */
+    .footer {
+      background: #a8d8f0;
+      color: #2c5aa0;
+      padding: 2rem;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .footer p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .footer a {
+      color: #2c7aa0;
+      text-decoration: none;
+    }
+
+    /* Project Detail Page */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #2c7aa0;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .back-button:hover {
+      color: #1a4f70;
+    }
+
+    .project-header {
+      background: linear-gradient(135deg, #a8d8f0 0%, #87ceeb 100%);
+      color: #2c5aa0;
+      padding: 3rem 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .project-header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+
+    .project-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .project-description {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15);
+    }
+
+    .project-description h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: #2c7aa0;
+    }
+
+    .project-description p {
+      color: #2c5aa0;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .led-specs {
+      background: #d4f1f9;
+      padding: 1.5rem;
+      border-radius: 6px;
+      margin: 1.5rem 0;
+      border-left: 4px solid #87ceeb;
+    }
+
+    .led-specs h3 {
+      color: #2c7aa0;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .spec-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #b0e0e6;
+    }
+
+    .spec-item:last-child {
+      border-bottom: none;
+    }
+
+    .spec-label {
+      font-weight: 600;
+      color: #2c7aa0;
+    }
+
+    .spec-value {
+      color: #2c5aa0;
+    }
+
+    .circuit-diagram {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15);
+    }
+
+    .circuit-diagram h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #2c7aa0;
+    }
+
+    .svg-container {
+      background: #d4f1f9;
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+    }
+
+    .code-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15);
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .code-header h2 {
+      font-size: 1.4rem;
+      color: #2c7aa0;
+      margin: 0;
+    }
+
+    .code-viewer {
+      background: #282c34;
+      color: #abb2bf;
+      padding: 1.5rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .code-viewer .keyword {
+      color: #c678dd;
+    }
+
+    .code-viewer .type {
+      color: #3f89c5;
+    }
+
+    .code-viewer .string {
+      color: #98c379;
+    }
+
+    .code-viewer .comment {
+      color: #5c6370;
+      font-style: italic;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #a8d8f0;
+      color: #2c5aa0;
+      padding: 0.75rem 1.5rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 2px solid #87ceeb;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+
+    .btn-download:hover {
+      background: #90cde8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(135, 206, 235, 0.3);
+    }
+
+    /* คลาสสำหรับควบคุมการซ่อน/แสดงปุ่มลอย */
+    .show-floating-btn {
+    display: flex !important;
+    animation: fadeInFloating 0.3s ease-out;
+    }
+
+    @keyframes fadeInFloating {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .nav-menu {
+        display: none;
+      }
+
+      .project-main {
+        grid-template-columns: 1fr;
+      }
+
+      .board-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>body {
+  background: #f5f5f5;
+  /* เปลี่ยนบรรทัด font-family เป็นตัวนี้ */
+  font-family: 'Itim', cursive, sans-serif; 
+  color: #333333;
+  height: 100%;
+}
+
+/* เพิ่มเติม: ปรับขนาดฟอนต์ให้อ่านง่ายขึ้นสำหรับเด็ก */
+h1, h2, h3 {
+  font-family: 'Itim', cursive;
+}
+
+p, li {
+  font-size: 1.1rem; /* ปรับขนาดตัวอักษรเนื้อหาให้ใหญ่ขึ้นนิดนึง */
+  line-height: 1.6;
+}
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="main-wrapper"><!-- Header -->
+   <header class="header">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <div class="header-content"><a class="logo-section" onclick="goHome()"> <i data-lucide="cpu" class="logo-icon"></i> <span id="site-title">Smart Innovation Challenge</span> </a>
+     <nav>
+      <ul class="nav-menu">
+       <li><a onclick="goHome(); scrollToSection('section1')" class="nav-link">ทำความรู้จัก Arduino</a></li>
+       <li><a onclick="goHome(); scrollToSection('section2')" class="nav-link">การใช้งานเบื้องต้น</a></li>
+       <li><a onclick="goHome(); scrollToSection('section3')" class="nav-link">Project</a></li>
+       <li><a href="workSheet.html" class="nav-link">ใบกิจกรรม</a></li>
+      </ul>
+     </nav>
+    </div>
+   </header><!-- Main Content -->
+   <div class="content"><!-- Home Page -->
+    <div id="home-page" class="page active">
+     <!-- Hero Section with Banner -->
+     <section class="hero" style="padding: 0;">
+      <a href="https://pic.in.th/image/HeaderArduino-%281%29.UzZmtx"><img src="https://img1.pic.in.th/images/HeaderArduino-1.png" alt="HeaderArduino (1)" border="0" style="width: 100%; height: auto; display: block;" loading="lazy"></a>
+     </section><!-- Section 1: ทำความรู้จัก Arduino -->
+     <section class="section" id="section1">
+      <h2 id="section1-title">ทำความรู้จัก Arduino</h2>
+      <p class="section-intro">Arduino เป็นแพลตฟอร์มโปรแกรมเมเบิ้ดที่ใช้งานง่าย อิเล็กทรอนิกส์ที่เหมาะสำหรับผู้เริ่มต้น ด้วยคมมูนิตี้ที่ใหญ่และเอกสารที่เพียงพอ</p>
+      <div style="margin-bottom: 2rem; text-align: center;"><img src="https://img1.pic.in.th/images/maxresdefault0cfa79f9f22328cd.jpg" alt="Arduino Boards Overview" loading="lazy" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15);" onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='Arduino image unavailable';">
+      </div>
+      <div class="board-grid">
+       <div class="board-card">
+        <h3>Arduino Uno</h3>
+        <p>บอร์ดที่ได้รับความนิยมมากที่สุด เหมาะสำหรับเริ่มต้นเรียนรู้ มี 14 ขาดิจิทัล และ 6 ขาอนาล็อก</p>
+       </div>
+       <div class="board-card">
+        <h3>Arduino Nano</h3>
+        <p>บอร์ดขนาดเล็ก เหมาะสำหรับโปรเจคที่ต้องการหลายบอร์ด หรือการสร้างสิ่งประดิษฐ์ขนาดเล็ก</p>
+       </div>
+       <div class="board-card">
+        <h3>Arduino Mega</h3>
+        <p>บอร์ดที่มีพอร์ตมากที่สุด มี 54 ขาดิจิทัล เหมาะสำหรับโปรเจคที่ซับซ้อน</p>
+       </div>
+      </div>
+     </section><!-- Section 2: การใช้งานเบื้องต้น -->
+     <section class="section" id="section2">
+      <h2 id="section2-title">การใช้งานเบื้องต้น</h2>
+      <p class="section-intro">ติดตั้ง Arduino IDE และเรียนรู้พื้นฐานการเขียนโปรแกรม</p>
+      <ul class="step-list">
+       <li>
+        <strong>ขั้นที่ 1:</strong> 
+        ดาวน์โหลดและติดตั้ง Arduino IDE จากเว็บไซต์ 
+        <a href="https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE" 
+        target="_blank" 
+        class="inline-flex items-center gap-1 text-sky-600 hover:text-sky-500 font-bold underline decoration-2 decoration-sky-300 underline-offset-4 transition-all">
+        คลิกที่นี่เพื่ออ่านวิธีติดตั้ง
+        <i data-lucide="external-link" class="w-4 h-4"></i>
+        </a>
+        </li>
+       <li><strong>ขั้นที่ 2:</strong> เชื่อมต่อบอร์ด Arduino ไปยังคอมพิวเตอร์ผ่านสาย USB</li>
+       <li><strong>ขั้นที่ 3:</strong> เลือก Board และ Port ที่ถูกต้องใน Arduino IDE</li>
+       <li><strong>ขั้นที่ 4:</strong> เขียนโปรแกรมและ Upload ไปยังบอร์ด</li>
+      </ul>
+      <div style="background: white; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; box-shadow: 0 2px 8px rgba(212, 197, 249, 0.15);">
+       <h3 style="color: #8a5f7f; margin-bottom: 1rem;">โครงสร้างโค้ด Arduino พื้นฐาน</h3>
+       <div style="background: #282c34; color: #abb2bf; padding: 1rem; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.6; overflow-x: auto;"><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;<span class="comment">// รันครั้งเดียวเมื่อเปิดบอร์ด</span><br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(<span class="string">13</span>, OUTPUT);<br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;<span class="comment">// รันซ้ำๆ ตลอดเวลา</span><br>
+         &nbsp;&nbsp;<span class="type">digitalWrite</span>(<span class="string">13</span>, HIGH);<br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">1000</span>);<br>
+         }
+       </div>
+      </div>
+     </section><!-- Section 3: โปรเจค -->
+     <section class="section" id="section3">
+      <h2 id="section3-title">Project</h2>
+      <p class="section-intro">เริ่มต้นด้วยโปรเจคที่ง่ายและสนุก With Arduino</p>
+      <div class="projects-grid">
+       <div class="project-card" onclick="goToProject('blink')">
+        <div class="project-icon">
+         💡
+        </div>
+        <div class="project-info">
+         <h3>Blink LED</h3>
+         <p>เรียนรู้การควบคุม LED ให้กะพริบ โปรเจคแรกของเกือบทุกคน</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+       <div class="project-card" onclick="goToProject('ldr')">
+        <div class="project-icon">
+         🌞
+        </div>
+        <div class="project-info">
+         <h3>LDR เซนเซอร์แสง + LED</h3>
+         <p>อ่านค่าความเข้มแสงและควบคุม LED ให้ติดอัตโนมัติ</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+       <div class="project-card" onclick="goToProject('switch')">
+        <div class="project-icon">
+         🔘
+        </div>
+        <div class="project-info">
+         <h3>Switch ปุ่มกดควบคุม LED</h3>
+         <p>ใช้ปุ่มกดเพื่อควบคุมการเปิด-ปิด LED</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+       <div class="project-card" onclick="goToProject('pir')">
+        <div class="project-icon">
+         🔬
+        </div>
+        <div class="project-info">
+         <h3>PIR เซนเซอร์ตรวจจับการเคลื่อนไหว</h3>
+         <p>ใช้เซนเซอร์ PIR เพื่อตรวจจับการเคลื่อนไหวและควบคุม LED</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+       <div class="project-card" onclick="goToProject('ultrasonic')">
+        <div class="project-icon">
+         📏
+        </div>
+        <div class="project-info">
+         <h3>Ultrasonic เซนเซอร์วัดระยะทาง</h3>
+         <p>ใช้เซนเซอร์ Ultrasonic เพื่อวัดระยะทางและควบคุม LED อัตโนมัติ</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+       <div class="project-card" onclick="goToProject('temp-sensor')">
+        <div class="project-icon">
+         🌡️
+        </div>
+        <div class="project-info">
+         <h3>Waterproof Temperature Sensor</h3>
+         <p>ใช้เซนเซอร์วัดอุณหภูมิกันน้ำ เพื่อวัดอุณหภูมิและแสดงผล</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+       <div class="project-card" onclick="goToProject('water-level')">
+        <div class="project-icon">
+         💧
+        </div>
+        <div class="project-info">
+         <h3>Water Level Sensor</h3>
+         <p>ใช้เซนเซอร์วัดระดับน้ำเพื่อตรวจจับและควบคุม LED อัตโนมัติ</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+
+        <div class="project-card" onclick="goToProject('buzzer')">
+        <div class="project-icon">
+        🔊
+        </div>
+        <div class="project-info">
+         <h3>Buzzer</h3>
+         <p>Buzzer เป็นลำโพงที่ส่งเสียงแจ้งเตือน</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+
+        <div class="project-card" onclick="goToProject('motor')">
+        <div class="project-icon">
+         ⚙️
+        </div>
+        <div class="project-info">
+         <h3>DC Motor ใช้งานกับพัดลมขนาดเล็ก</h3>
+         <p>ใช้ Motor ในการควบคุมการทำงานของใบพัดพัดลมขนาดเล็ก</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+
+        <div class="project-card" onclick="goToProject('pump')">
+        <div class="project-icon">
+         🎐
+        </div>
+        <div class="project-info">
+         <h3>DC Motor ใช้งานกับปั้มน้ำ</h3>
+         <p>ใช้ Motor ในการควบคุมการทำงานของปั้มน้ำ</p><a class="btn-learn">ศึกษาเพิ่มเติม →</a>
+        </div>
+       </div>
+
+     </section>
+
+
+
+    </div><!-- Blink Project Page -->
+    <div id="project-blink" class="project-detail page">
+     <div class="project-header">
+      <div style="max-width: 1200px; margin: 0 auto;"><a class="back-button" onclick="goHome()"> <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก </a>
+       <h1>Blink LED</h1>
+       <p>เรียนรู้วิธีการทำให้ LED กะพริบอย่างต่อเนื่อง</p>
+      </div>
+     </div>
+     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <div class="project-main">
+       <div class="project-description">
+        <h2>LED</h2>
+        <p>Light Emitting Diode (LED) เป็นองค์ประกอบอิเล็กทรอนิกส์ที่ปล่อยแสงเมื่อมีกระแสไฟฟ้าไหลผ่าน</p>
+        <div class="led-specs">
+         <h3>✨ คุณสมบัติของ LED</h3>
+         <div class="spec-item"><span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">2V - 3.2V</span>
+         </div>
+         <div class="spec-item"><span class="spec-label">กระแสไฟฟ้า:</span> <span class="spec-value">15 - 20 mA</span>
+         </div>
+         <div class="spec-item"><span class="spec-label">ขาสีแดง:</span> <span class="spec-value">สายบวก (+) Positive</span>
+         </div>
+         <div class="spec-item"><span class="spec-label">ขาสีดำ:</span> <span class="spec-value">สายลบ (-) Negative</span>
+         </div>
+         <div class="spec-item"><span class="spec-label">ความต้านทาน:</span> <span class="spec-value">220Ω หรือ 330Ω</span>
+         </div>
+        </div>
+        <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">📍 ข้อเตือน</h3>
+        <p style="color: #d32f2f; background: #ffebee; padding: 1rem; border-radius: 6px;">⚠️ LED มีขั้วบวก-ลบ ต่อกลับจะไม่ติด ต้องใช้ตัวต้านทาน 220-330Ω เสมอ เพื่อป้องกันการไหม้</p>
+       </div>
+       <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร</h3>
+        <div class="svg-container"><img src="https://img1.pic.in.th/images/LED.png" alt="LED Circuit Diagram" loading="lazy" style="max-width: 100%; height: auto;" onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='Circuit diagram unavailable';">
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.6;"><strong>ขั้นตอนการต่อ:</strong><br>
+          1. ต่อข่าว GND จาก Arduino ไปยังขาสีดำของ LED<br>
+          2. ต่อตัวต้านทาน 220Ω เข้ากับขาสีแดง<br>
+          3. ต่อปลายตัวต้านทานไปยัง Pin 10 ของ Arduino</p>
+       </div>
+      </div><!-- Code Section -->
+      <div class="code-section">
+       <div class="code-header">
+        <h2>💻 โค้ดของโปรเจค</h2><button class="btn-download" onclick="downloadCode()"> <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download </button>
+       </div>
+       <div class="code-viewer">
+        <span class="keyword">const</span> <span class="type">int</span> ledPin = <span class="string">10</span>; <span class="comment">//the number of the LED pin</span><br><br><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;Serial.<span class="type">begin</span>(<span class="string">9600</span>);<br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(ledPin, OUTPUT); <span class="comment">//initialize the LED pin as an output</span><br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, HIGH); <span class="comment">//turn LED on</span><br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"LED is ON"</span>);<br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">1000</span>);<br>
+         &nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, LOW);<br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"LED is OFF"</span>); <span class="comment">//turn LED off</span><br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">1000</span>);<br>
+         }
+       </div>
+      </div><!-- How it Works Section -->
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-top: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">⚙️ วิธีการทำงานของโปรแกรม</h3>
+       <ol style="color: #333; line-height: 2; padding-left: 1.5rem;">
+        <li><strong>อ่านค่า LDR:</strong> ใช้ analogRead() เพื่ออ่านค่าความเข้มแสง (0-1023)</li>
+        <li><strong>ตรวจสอบเงื่อนไข:</strong> ถ้าค่า ≤ 100 (มืด) → LED ON | ถ้า &gt; 100 (สว่าง) → LED OFF</li>
+        <li><strong>แสดงผล:</strong> ส่งข้อมูลไปยัง Serial Monitor เพื่อดูค่าและสถานะ</li>
+        <li><strong>เรียกซ้ำ:</strong> wait 500ms แล้วทำซ้ำตั้งแต่ขั้นที่ 1</li>
+       </ol>
+      </div><!-- Tips Section -->
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f4c3 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; margin-bottom: 3rem;">
+       <h3 style="color: #0066cc; margin-bottom: 1rem;">💡 เคล็ดลับและการแก้ไข</h3>
+       <ul style="list-style: none; color: #333; line-height: 1.8;">
+        <li>✓ <strong>LED ไม่ติด?</strong> ตรวจสอบว่าต่อขั้ว + - ถูกต้องแล้วหรือไม่</li>
+        <li>✓ <strong>ต้องการปรับความเร็ว:</strong> เปลี่ยนค่า delay() จากตัวเลขในหน่วยมิลลิวินาที</li>
+        <li>✓ <strong>ต้องการให้ LED สว่างมากขึ้น:</strong> ใช้ PWM (Pulse Width Modulation) ด้วย analogWrite()</li>
+        <li>✓ <strong>เปิดหลาย LED:</strong> เพิ่มตัวแปร ledPin หลายตัว และ digitalWrite หลายครั้ง</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- LDR Project Page -->
+    <div id="project-ldr" class="project-detail page">
+     <div class="project-header">
+      <div style="max-width: 1200px; margin: 0 auto;"><a class="back-button" onclick="goHome()"> <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก </a>
+       <h1>LDR เซนเซอร์แสง + LED อัตโนมัติ</h1>
+       <p>อ่านค่าความเข้มแสงและควบคุม LED ให้ติดอัตโนมัติ</p>
+      </div>
+     </div>
+     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <div class="project-main">
+       <div class="project-description">
+        <h2>LDR</h2>
+        <p>Light Dependent Resistor (LDR) หรือ Photoresistor เป็นตัวต้านทานที่มีค่าเปลี่ยนแปลงตามความเข้มของแสง เมื่อมีแสงมากจะต้านทานน้อย เมื่อมีแสงน้อยจะต้านทานมาก</p>
+        <div class="led-specs">
+         <h3>✨ คุณสมบัติของ LDR</h3>
+         <div class="spec-item">
+          <span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">5V DC</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ค่าอ่าน (Analog):</span> <span class="spec-value">0-1023</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความต้านทานที่แสง:</span> <span class="spec-value">1-10 kΩ</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความต้านทานในที่มืด:</span> <span class="spec-value">1 MΩ ขึ้นไป</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">พิกัดลักษณะกำลัง:</span> <span class="spec-value">100 mW</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความต้านทานอ้างอิง:</span> <span class="spec-value">10 kΩ</span>
+         </div>
+        </div>
+        <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">🔧 หลักการทำงาน</h3>
+        <p style="color: #333; background: #f5f5f5; padding: 1rem; border-radius: 6px; line-height: 1.8;">LDR ใช้ในการตรวจจับแสง โดยการอ่านค่าแรงดันไฟฟ้าผ่าน Analog Pin บน Arduino ค่าที่อ่านจะเป็น 0-1023 ขึ้นอยู่กับความเข้มของแสง เมื่อแสงมากค่าจะสูง เมื่อแสงน้อยค่าจะต่ำ เหมาะสำหรับสร้างระบบไฟอัตโนมัติ</p>
+       </div>
+       <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร</h3>
+        <div class="svg-container"><img src="https://img2.pic.in.th/LDR.png" alt="LDR Circuit Diagram" loading="lazy" style="max-width: 100%; height: auto;" onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='Circuit diagram unavailable';">
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.8;"><strong>📍 ขั้นตอนการต่อ LDR:</strong><br>
+          1️⃣ ต่อ 5V จาก Arduino ไปยังปลายด้านหนึ่งของ LDR<br>
+          2️⃣ ต่อปลายอีกด้านของ LDR ไปยัง A0 (Analog Pin)<br>
+          3️⃣ ต่อตัวต้านทาน 10kΩ ระหว่าง A0 กับ GND (วงจร voltage divider)<br>
+          4️⃣ ต่อ GND จาก Arduino ไปยังขั้วลบ<br><br><strong>📍 ขั้นตอนการต่อ LED:</strong><br>
+          1️⃣ ต่อ Pin 10 ไปยังตัวต้านทาน 220Ω<br>
+          2️⃣ ต่อปลายตัวต้านทานไปยังขาสีแดงของ LED<br>
+          3️⃣ ต่อขาสีดำของ LED ไปยัง GND</p>
+       </div>
+      </div><!-- Code Section -->
+      <div class="code-section">
+       <div class="code-header">
+        <h2>💻 โค้ดของโปรเจค (LDR + LED)</h2><button class="btn-download" onclick="downloadCodeLDRLED()"> <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download </button>
+       </div>
+       <div class="code-viewer">
+        <span class="keyword">const</span> <span class="type">int</span> ledPin = <span class="string">10</span>; <span class="comment">//LED pin</span><br><span class="keyword">const</span> <span class="type">int</span> ldrPin = <span class="string">A0</span>; <span class="comment">//LDR pin</span><br><br><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;Serial.<span class="type">begin</span>(<span class="string">9600</span>);<br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(ledPin, OUTPUT); <span class="comment">//LED as output</span><br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(ldrPin, INPUT); <span class="comment">//LDR as input</span><br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;<span class="type">int</span> ldrValue = <span class="type">analogRead</span>(ldrPin); <span class="comment">//read LDR value (0-1023)</span><br>
+         &nbsp;&nbsp;Serial.<span class="type">print</span>(<span class="string">"Light Value: "</span>);<br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(ldrValue);<br><br>
+         &nbsp;&nbsp;<span class="keyword">if</span> (ldrValue &lt;= <span class="string">100</span>) {<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, HIGH); <span class="comment">//turn LED on (dark)</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"LDR is DARK, LED is ON"</span>);<br>
+         &nbsp;&nbsp;}<br>
+         &nbsp;&nbsp;<span class="keyword">else</span> {<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, LOW); <span class="comment">//turn LED off (bright)</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"It's BRIGHT, LED is OFF"</span>);<br>
+         &nbsp;&nbsp;}<br><br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">500</span>);<br>
+         }
+       </div>
+      </div><!-- Tips Section -->
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f4c3 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; margin-bottom: 3rem;">
+       <h3 style="color: #0066cc; margin-bottom: 1.5rem;">💡 เคล็ดลับและการแก้ไข</h3>
+       <ul style="list-style: none; color: #333; line-height: 2;">
+        <li>✓ <strong>ปรับความไว:</strong> เปลี่ยนค่า 100 เป็นค่าอื่น (เช่น 300, 500) ตามสภาพแสงจริง</li>
+        <li>✓ <strong>ดูค่าจริง:</strong> เปิด Serial Monitor (Ctrl+Shift+M) เพื่อดูค่า LDR แบบเรียลไทม์</li>
+        <li>✓ <strong>ใช้ Serial Plotter:</strong> เพื่อดูกราฟค่าแสงเป็นตัวเลขและทำให้ปรับง่ายขึ้น</li>
+        <li>✓ <strong>ควบคุมระดับสว่าง:</strong> ใช้ analogWrite() แทน digitalWrite() เพื่อปรับความสว่าง (PWM)</li>
+        <li>✓ <strong>โปรเจคขั้นสูง:</strong> เพิ่ม digitalWrite LED หลายดวง หรือควบคุมอุปกรณ์อื่น</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- Switch Project Page -->
+    <div id="project-switch" class="project-detail page">
+     <div class="project-header">
+      <div style="max-width: 1200px; margin: 0 auto;"><a class="back-button" onclick="goHome()"> <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก </a>
+       <h1>Switch ปุ่มกดควบคุม LED</h1>
+       <p>ใช้ปุ่มกดเพื่อควบคุมการเปิด-ปิด LED อย่างง่าย</p>
+      </div>
+     </div>
+     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <div class="project-main">
+       <div class="project-description">
+        <h2>Push Button Switch</h2>
+        <p>Push Button Switch เป็นปุ่มกดที่ใช้สำหรับเปลี่ยนสถานะการไหลของกระแสไฟฟ้า เมื่อกดปุ่มจะปิดวงจร เมื่อปล่อยจะเปิดวงจร เหมาะสำหรับการควบคุมอุปกรณ์ต่างๆ</p>
+        <div class="led-specs">
+         <h3>✨ คุณสมบัติของ Push Button Switch</h3>
+         <div class="spec-item">
+          <span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">3.3V - 5V</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">กระแสไฟฟ้า:</span> <span class="spec-value">50 mA</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">วัสดุ:</span> <span class="spec-value">พลาสติกและโลหะ</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">จำนวนขา:</span> <span class="spec-value">4 ขา (2 ชุด common)</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความต้านทานอ้างอิง:</span> <span class="spec-value">10 kΩ (Pull-up)</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">สถานะ:</span> <span class="spec-value">HIGH = ปุ่มกด, LOW = ปล่อย</span>
+         </div>
+        </div>
+        <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">🔧 หลักการทำงาน</h3>
+        <p style="color: #333; background: #f5f5f5; padding: 1rem; border-radius: 6px; line-height: 1.8;">Push Button Switch ใช้อ่านสถานะ Digital Pin โดยใช้ digitalRead() ซึ่งจะคืนค่า HIGH (1) หรือ LOW (0) ตามสถานะของปุ่ม เมื่อกดปุ่มค่าจะเป็น HIGH เมื่อปล่อยค่าจะเป็น LOW (ขึ้นอยู่กับการต่อวงจร Pull-up หรือ Pull-down)</p>
+       </div>
+       <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร</h3>
+        <div class="svg-container"><img src="https://img2.pic.in.th/SwitchLED.png" alt="Switch LED Circuit Diagram" loading="lazy" style="max-width: 100%; height: auto;" onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='Circuit diagram unavailable';">
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.8;"><strong>📍 ขั้นตอนการต่อ Push Button:</strong><br>
+          1️⃣ ต่อ 5V จาก Arduino ไปยังขา 1 ของปุ่มกด<br>
+          2️⃣ ต่อขา 2 ของปุ่มกดไปยัง Pin 2 (Digital Input)<br>
+          3️⃣ ต่อตัวต้านทาน 10kΩ ระหว่าง Pin 2 กับ GND (Pull-down resistor)<br><br><strong>📍 ขั้นตอนการต่อ LED:</strong><br>
+          1️⃣ ต่อ Pin 13 ไปยังตัวต้านทาน 220Ω<br>
+          2️⃣ ต่อปลายตัวต้านทานไปยังขาสีแดงของ LED<br>
+          3️⃣ ต่อขาสีดำของ LED ไปยัง GND</p>
+       </div>
+      </div><!-- Code Section -->
+      <div class="code-section">
+       <div class="code-header">
+        <h2>💻 โค้ดของโปรเจค (Switch + LED)</h2><button class="btn-download" onclick="downloadCodeSwitch()"> <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download </button>
+       </div>
+       <div class="code-viewer">
+        <span class="keyword">int</span> buttonState = <span class="string">0</span>; <span class="comment">//variable for reading the pushbutton status</span><br><span class="keyword">int</span> LedPin = <span class="string">13</span>; <span class="comment">//LED pin</span><br><span class="keyword">int</span> buttonPin = <span class="string">2</span>; <span class="comment">//button pin</span><br><br><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;Serial.<span class="type">begin</span>(<span class="string">9600</span>);<br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(buttonPin, INPUT); <span class="comment">//initialize the button pin as an input</span><br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(LedPin, OUTPUT); <span class="comment">//initialize the LED pin as an output</span><br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;<span class="comment">//read the state of the pushbutton value</span><br>
+         &nbsp;&nbsp;buttonState = <span class="type">digitalRead</span>(buttonPin);<br>
+         &nbsp;&nbsp;<span class="comment">//check if pushbutton is pressed. if it is, the buttonState is HIGH</span><br>
+         &nbsp;&nbsp;<span class="keyword">if</span> (buttonState == HIGH) {<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//turn LED on</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(LedPin, HIGH);<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Button Pressed - LED ON"</span>);<br>
+         &nbsp;&nbsp;} <span class="keyword">else</span> {<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//turn LED off</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(LedPin, LOW);<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Button Released - LED OFF"</span>);<br>
+         &nbsp;&nbsp;}<br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">10</span>);<br>
+         }
+       </div>
+      </div><!-- How it Works Section -->
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-top: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">⚙️ วิธีการทำงานของโปรแกรม</h3>
+       <ol style="color: #333; line-height: 2; padding-left: 1.5rem;">
+        <li><strong>อ่านค่าปุ่ม:</strong> ใช้ digitalRead() เพื่ออ่านสถานะของปุ่มกด (HIGH หรือ LOW)</li>
+        <li><strong>ตรวจสอบเงื่อนไข:</strong> ถ้า buttonState == HIGH (ปุ่มถูกกด) → LED ON | ถ้า LOW (ปล่อย) → LED OFF</li>
+        <li><strong>ควบคุม LED:</strong> ใช้ digitalWrite() เพื่อเปิด-ปิด LED</li>
+        <li><strong>แสดงผล:</strong> ส่งข้อมูลไปยัง Serial Monitor เพื่อดูสถานะ</li>
+        <li><strong>เรียกซ้ำ:</strong> รอ 10ms แล้วทำซ้ำตั้งแต่ขั้นที่ 1</li>
+       </ol>
+      </div><!-- Tips Section -->
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f4c3 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; margin-bottom: 3rem;">
+       <h3 style="color: #0066cc; margin-bottom: 1.5rem;">💡 เคล็ดลับและการแก้ไข</h3>
+       <ul style="list-style: none; color: #333; line-height: 2;">
+        <li>✓ <strong>ปุ่มไม่ตอบสนอง?</strong> ตรวจสอบการต่อวงจรและใช้ Serial Monitor เพื่อดูค่า</li>
+        <li>✓ <strong>ปุ่มส่ายไป-มา (Bounce)?</strong> เพิ่ม debounce delay หรือใช้ library Bounce2</li>
+        <li>✓ <strong>ทำให้เปิด-ปิดสลับกัน:</strong> ใช้ตัวแปร toggle เพื่อจำสถานะเก่า</li>
+        <li>✓ <strong>เพิ่มปุ่มหลายตัว:</strong> กำหนด buttonPin หลายตัว และ if-else เพิ่มเติม</li>
+        <li>✓ <strong>ควบคุมหลายอุปกรณ์:</strong> ใช้ digitalWrite() สำหรับหลายพอร์ต</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- PIR Project Page -->
+    <div id="project-pir" class="project-detail page">
+     <div class="project-header">
+      <div style="max-width: 1200px; margin: 0 auto;"><a class="back-button" onclick="goHome()"> <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก </a>
+       <h1>PIR เซนเซอร์ตรวจจับการเคลื่อนไหว</h1>
+       <p>ใช้เซนเซอร์ PIR เพื่อตรวจจับการเคลื่อนไหวและควบคุม LED</p>
+      </div>
+     </div>
+     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <div class="project-main">
+       <div class="project-description">
+        <h2>PIR Sensor</h2>
+        <p>PIR (Passive Infrared Sensor) หรือเซนเซอร์อินฟราเรดพาสซีฟ เป็นเซนเซอร์ที่ใช้ตรวจจับการเคลื่อนไหวของวัตถุที่มีความร้อน (มนุษย์ สัตว์ เป็นต้น) โดยการรับรูแรงส่องสว่างอินฟราเรดที่เปล่งออกมา</p>
+        <div class="led-specs">
+         <h3>✨ คุณสมบัติของ PIR Sensor</h3>
+         <div class="spec-item">
+          <span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">5V DC</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">กระแสไฟฟ้า:</span> <span class="spec-value">50 mA</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความไวสูงสุด:</span> <span class="spec-value">7 เมตร</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">มุมตรวจจับ:</span> <span class="spec-value">110 องศา</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">เวลาตัวจับ:</span> <span class="spec-value">ปรับได้ 5-300 วินาที</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">สถานะเอาต์พุต:</span> <span class="spec-value">HIGH = ตรวจพบการเคลื่อนไหว</span>
+         </div>
+        </div>
+        <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">🔧 หลักการทำงาน</h3>
+        <p style="color: #333; background: #f5f5f5; padding: 1rem; border-radius: 6px; line-height: 1.8;">PIR Sensor ทำงานโดยตรวจจับการเปลี่ยนแปลงของรังสีอินฟราเรด เมื่อมีการเคลื่อนไหวเซนเซอร์จะส่งสัญญาณ HIGH (5V) ไปยัง Arduino ช่วงเวลาที่ตั้งไว้ (5-300 วินาที) หากไม่มีการเคลื่อนไหวเซนเซอร์จะส่งสัญญาณ LOW เหมาะสำหรับสร้างระบบไฟประหยัด หรือระบบสิ่งแจ้งเตือน</p>
+       </div>
+       <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร</h3>
+        <div class="svg-container"><img src="https://img1.pic.in.th/images/PIR.png" alt="PIR Sensor Circuit Diagram" loading="lazy" style="max-width: 100%; height: auto;" onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='Circuit diagram unavailable';">
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.8;"><strong>📍 ขั้นตอนการต่อ PIR Sensor:</strong><br>
+          1️⃣ ต่อ 5V จาก Arduino ไปยังขา VCC ของ PIR Sensor<br>
+          2️⃣ ต่อ GND จาก Arduino ไปยังขา GND ของ PIR Sensor<br>
+          3️⃣ ต่อขา OUT ของ PIR Sensor ไปยัง Pin 13 (Digital Input)<br><br><strong>📍 ขั้นตอนการต่อ LED:</strong><br>
+          1️⃣ ต่อ Pin 10 ไปยังตัวต้านทาน 220Ω<br>
+          2️⃣ ต่อปลายตัวต้านทานไปยังขาสีแดงของ LED<br>
+          3️⃣ ต่อขาสีดำของ LED ไปยัง GND</p>
+       </div>
+      </div><!-- Code Section -->
+      <div class="code-section">
+       <div class="code-header">
+        <h2>💻 โค้ดของโปรเจค (PIR + LED)</h2><button class="btn-download" onclick="downloadCodePIR()"> <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download </button>
+       </div>
+       <div class="code-viewer">
+        <span class="keyword">int</span> pirPin = <span class="string">13</span>; <span class="comment">//the pin connected to OUT of PIR</span><br><span class="keyword">int</span> ledPin = <span class="string">10</span>; <span class="comment">//the pin connected to LED</span><br><span class="keyword">int</span> pirValue; <span class="comment">//variable to store the value from PIR</span><br><br><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;Serial.<span class="type">begin</span>(<span class="string">9600</span>); <span class="comment">//open Serial Monitor</span><br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(ledPin, OUTPUT);<br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(pirPin, INPUT);<br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;pirValue = <span class="type">digitalRead</span>(pirPin); <span class="comment">//read value from PIR (HIGH/LOW)</span><br>
+         &nbsp;&nbsp;<span class="keyword">if</span> (pirValue == HIGH) { <span class="comment">//if motion detected</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, HIGH); <span class="comment">//turn LED on</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Motion detected!"</span>);<br>
+         &nbsp;&nbsp;} <span class="keyword">else</span> {<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, LOW); <span class="comment">//turn LED off</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Motion ended."</span>);<br>
+         &nbsp;&nbsp;}<br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">1000</span>); <span class="comment">//slight delay</span><br>
+         }
+       </div>
+      </div><!-- How it Works Section -->
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-top: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">⚙️ วิธีการทำงานของโปรแกรม</h3>
+       <ol style="color: #333; line-height: 2; padding-left: 1.5rem;">
+        <li><strong>อ่านค่า PIR:</strong> ใช้ digitalRead() เพื่ออ่านสถานะของเซนเซอร์ (HIGH หรือ LOW)</li>
+        <li><strong>ตรวจสอบเงื่อนไข:</strong> ถ้า pirValue == HIGH (ตรวจพบการเคลื่อนไหว) → LED ON | ถ้า LOW (ไม่มีการเคลื่อนไหว) → LED OFF</li>
+        <li><strong>ควบคุม LED:</strong> ใช้ digitalWrite() เพื่อเปิด-ปิด LED</li>
+        <li><strong>แสดงผล:</strong> ส่งข้อมูลไปยัง Serial Monitor เพื่อดูข้อความและสถานะ</li>
+        <li><strong>เรียกซ้ำ:</strong> รอ 1 วินาที แล้วทำซ้ำตั้งแต่ขั้นที่ 1</li>
+       </ol>
+      </div><!-- Tips Section -->
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f4c3 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; margin-bottom: 3rem;">
+       <h3 style="color: #0066cc; margin-bottom: 1.5rem;">💡 เคล็ดลับและการแก้ไข</h3>
+       <ul style="list-style: none; color: #333; line-height: 2;">
+        <li>✓ <strong>ปรับความไว:</strong> หมุน potentiometer บนเซนเซอร์ (ป้ายกำกับ Sx) เพื่อปรับความไวตรวจจับ</li>
+        <li>✓ <strong>ปรับเวลา:</strong> หมุน potentiometer (ป้ายกำกับ TIME) เพื่อปรับระยะเวลาที่ LED ติด (5-300 วินาที)</li>
+        <li>✓ <strong>ดูค่าจริง:</strong> เปิด Serial Monitor เพื่อดูข้อความและตรวจสอบการทำงาน</li>
+        <li>✓ <strong>เพิ่มการหน่วงเวลา:</strong> เปลี่ยน delay() เพื่อป้องกันการเปิด-ปิดบ่อย</li>
+        <li>✓ <strong>ควบคุมหลายอุปกรณ์:</strong> เพิ่ม digitalWrite() สำหรับอุปกรณ์อื่น (พัดลม ลำโพง ฯลฯ)</li>
+        <li>✓ <strong>ระบบประหยัดพลังงาน:</strong> เหมาะสำหรับโปรเจคผนังไฟอัตโนมัติ หรือระบบสิ่งแจ้งเตือน</li>
+       </ul>
+      </div>
+     </div>
+     
+    </div><!-- Ultrasonic Project Page -->
+    <div id="project-ultrasonic" class="project-detail page">
+     <div class="project-header">
+      <div style="max-width: 1200px; margin: 0 auto;"><a class="back-button" onclick="goHome()"> <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก </a>
+       <h1>Ultrasonic เซนเซอร์วัดระยะทาง</h1>
+       <p>ใช้เซนเซอร์ Ultrasonic เพื่อวัดระยะทางและควบคุม LED </p>
+      </div>
+     </div>
+     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <div class="project-main">
+       <div class="project-description">
+        <h2>Ultrasonic Sensor</h2>
+        <p>Ultrasonic Sensor หรือเซนเซอร์อัลตราโซนิก เป็นเซนเซอร์ที่ใช้วัดระยะทางของวัตถุโดยการส่งคลื่นเสียงที่มีความถี่สูงและรับคลื่นที่สะท้อนกลับมา จากนั้นคำนวณเวลาที่ใช้เพื่อหาระยะทาง</p>
+        <div class="led-specs">
+         <h3>✨ คุณสมบัติของ Ultrasonic Sensor</h3>
+         <div class="spec-item">
+          <span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">5V DC</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">กระแสไฟฟ้า:</span> <span class="spec-value">15 mA</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ช่วงการวัด:</span> <span class="spec-value">2 ซม. - 4 เมตร</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความถี่เสียง:</span> <span class="spec-value">40 kHz</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">มุมการวัด:</span> <span class="spec-value">ประมาณ 15 องศา</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความแม่นยำ:</span> <span class="spec-value">±3 มม.</span>
+         </div>
+        </div>
+        <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">🔧 หลักการทำงาน</h3>
+        <p style="color: #333; background: #f5f5f5; padding: 1rem; border-radius: 6px; line-height: 1.8;">Ultrasonic Sensor ทำงานโดยการส่งคลื่นเสียงขึ้น 40 kHz ผ่านขา Trigger (Trig) แล้วรอให้คลื่นสะท้อนกลับมา ซึ่งจะได้รับผ่านขา Echo บน Arduino จะวัดเวลาที่ใช้ (duration) แล้วนำมาคำนวณระยะทาง โดยใช้สูตร: Distance = (duration × ความเร็วเสียง) ÷ 2 ซึ่งหารด้วย 2 เพราะคลื่นไปและกลับ</p>
+       </div>
+       <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร</h3>
+        <div class="svg-container"><img src="https://img1.pic.in.th/images/Ultrasonic-1.png" alt="Ultrasonic Sensor Circuit Diagram" loading="lazy" style="max-width: 100%; height: auto;" onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='Circuit diagram unavailable';">
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.8;"><strong>📍 ขั้นตอนการต่อ Ultrasonic Sensor:</strong><br>
+          1️⃣ ต่อ VCC ของเซนเซอร์ไปยัง 5V ของ Arduino<br>
+          2️⃣ ต่อ GND ของเซนเซอร์ไปยัง GND ของ Arduino<br>
+          3️⃣ ต่อ TRIG (Trigger) ของเซนเซอร์ไปยัง Pin 2 ของ Arduino<br>
+          4️⃣ ต่อ ECHO ของเซนเซอร์ไปยัง Pin 3 ของ Arduino<br><br><strong>📍 ขั้นตอนการต่อ LED:</strong><br>
+          1️⃣ ต่อ Pin 10 ไปยังตัวต้านทาน 220Ω<br>
+          2️⃣ ต่อปลายตัวต้านทานไปยังขาสีแดงของ LED<br>
+          3️⃣ ต่อขาสีดำของ LED ไปยัง GND</p>
+       </div>
+      </div>
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-bottom: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">📐 การคำนวณระยะทาง</h3>
+       <div class="svg-container" style="background: white; border: 2px solid #87ceeb;"><img src="https://img1.pic.in.th/images/unnamed-1999ff2f4a28b2237.png" alt="Ultrasonic Distance Calculation" loading="lazy" style="max-width: 100%; height: auto;" onerror="console.error('Image failed to load:', this.src); this.style.background='#f0f0f0'; this.alt='Calculation diagram unavailable';">
+       </div>
+       <p style="color: #666; margin-top: 1.5rem; font-size: 0.95rem; line-height: 1.8;"><strong>สูตรการคำนวณ:</strong><br>
+         • Distance (ระยะทาง) = (duration × 0.034) ÷ 2 ซม.<br>
+         • Duration = เวลาที่คลื่นใช้ไปและกลับมา (microseconds)<br>
+         • 0.034 = ความเร็วเสียงในอากาศ (340 m/s แปลงเป็น cm/microsecond)<br>
+         • หารด้วย 2 เพราะคลื่นเดินทางไปยังวัตถุและกลับมา</p>
+      </div><!-- Code Section -->
+      <div class="code-section">
+       <div class="code-header">
+        <h2>💻 โค้ดของโปรเจค (Ultrasonic + LED)</h2><button class="btn-download" onclick="downloadCodeUltrasonic()"> <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download </button>
+       </div>
+       <div class="code-viewer">
+        <span class="keyword">const</span> <span class="type">int</span> trigPin = <span class="string">2</span>; <span class="comment">//Trig pin</span><br><span class="keyword">const</span> <span class="type">int</span> echoPin = <span class="string">3</span>; <span class="comment">//Echo pin</span><br><span class="keyword">const</span> <span class="type">int</span> ledPin = <span class="string">10</span>; <span class="comment">//LED pin</span><br><span class="keyword">long</span> duration;<br><span class="keyword">int</span> distance;<br><br><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(echoPin, INPUT); <span class="comment">//Echo pin as input</span><br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(trigPin, OUTPUT); <span class="comment">//Trig pin as output</span><br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(ledPin, OUTPUT);<br>
+         &nbsp;&nbsp;Serial.<span class="type">begin</span>(<span class="string">9600</span>);<br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;<span class="comment">//Clear Trig pin</span><br>
+         &nbsp;&nbsp;<span class="type">digitalWrite</span>(trigPin, LOW);<br>
+         &nbsp;&nbsp;<span class="type">delayMicroseconds</span>(<span class="string">2</span>);<br><br>
+         &nbsp;&nbsp;<span class="comment">//Send sound wave (10 microseconds)</span><br>
+         &nbsp;&nbsp;<span class="type">digitalWrite</span>(trigPin, HIGH);<br>
+         &nbsp;&nbsp;<span class="type">delayMicroseconds</span>(<span class="string">10</span>);<br>
+         &nbsp;&nbsp;<span class="type">digitalWrite</span>(trigPin, LOW);<br><br>
+         &nbsp;&nbsp;<span class="comment">//Read value from Echo pin</span><br>
+         &nbsp;&nbsp;duration = <span class="type">pulseIn</span>(echoPin, HIGH);<br><br>
+         &nbsp;&nbsp;<span class="comment">//Calculate distance</span><br>
+         &nbsp;&nbsp;distance = duration * <span class="string">0.034</span> / <span class="string">2</span>;<br><br>
+         &nbsp;&nbsp;Serial.<span class="type">print</span>(<span class="string">"Distance: "</span>);<br>
+         &nbsp;&nbsp;Serial.<span class="type">print</span>(distance);<br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">" cm"</span>);<br><br>
+         &nbsp;&nbsp;<span class="keyword">if</span>(distance &lt; <span class="string">50</span>){<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, HIGH); <span class="comment">//LED on if object near</span><br>
+         &nbsp;&nbsp;}<br>
+         &nbsp;&nbsp;<span class="keyword">else</span>{<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, LOW); <span class="comment">//LED off</span><br>
+         &nbsp;&nbsp;}<br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">100</span>);<br>
+         }
+       </div>
+      </div><!-- How it Works Section -->
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-top: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">⚙️ วิธีการทำงานของโปรแกรม</h3>
+       <ol style="color: #333; line-height: 2; padding-left: 1.5rem;">
+        <li><strong>เคลียร์ Trig:</strong> ตั้ง trigPin เป็น LOW แล้วรอ 2 microseconds</li>
+        <li><strong>ส่งคลื่นเสียง:</strong> ตั้ง trigPin เป็น HIGH ในช่วง 10 microseconds แล้วตั้งเป็น LOW</li>
+        <li><strong>รับสัญญาณ Echo:</strong> ใช้ pulseIn() อ่านเวลาที่สัญญาณ Echo เป็น HIGH</li>
+        <li><strong>คำนวณระยะทาง:</strong> นำค่า duration คูณ 0.034 แล้วหารด้วย 2 เพื่อได้ระยะทาง (ซม.)</li>
+        <li><strong>ควบคุม LED:</strong> ถ้าระยะ &lt; 50 ซม. → LED ON | ถ้า ≥ 50 ซม. → LED OFF</li>
+        <li><strong>แสดงผล:</strong> ส่งระยะทางไปยัง Serial Monitor เพื่อดูแบบเรียลไทม์</li>
+       </ol>
+      </div><!-- Tips Section -->
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f4c3 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; margin-bottom: 3rem;">
+       <h3 style="color: #0066cc; margin-bottom: 1.5rem;">💡 เคล็ดลับและการแก้ไข</h3>
+       <ul style="list-style: none; color: #333; line-height: 2;">
+        <li>✓ <strong>ปรับค่า Threshold:</strong> เปลี่ยนค่า 50 เป็นค่าอื่น (เช่น 30, 70) ตามที่ต้องการ</li>
+        <li>✓ <strong>ดูค่าจริง:</strong> เปิด Serial Monitor เพื่อดูระยะทางแบบเรียลไทม์</li>
+        <li>✓ <strong>ใช้ Serial Plotter:</strong> เพื่อดูกราฟระยะทางและปรับง่ายขึ้น</li>
+        <li>✓ <strong>เซนเซอร์วัดผิด?</strong> ตรวจสอบการต่อ TRIG และ ECHO ให้ถูกต้อง</li>
+        <li>✓ <strong>เพิ่มเสียง Buzzer:</strong> เพิ่มเสียงเตือนเมื่อวัตถุเข้ามาใกล้</li>
+        <li>✓ <strong>โปรเจคขั้นสูง:</strong> วัดระยะหลายจุด หรือสร้างระบบหลีกเลี่ยงสิ่งกีดขวาง</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- Waterproof Temperature Sensor Project Page -->
+    <div id="project-temp-sensor" class="project-detail page">
+     <div class="project-header">
+      <div style="max-width: 1200px; margin: 0 auto;"><a class="back-button" onclick="goHome()"> <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก </a>
+       <h1>Waterproof Temperature Sensor</h1>
+       <p>ใช้เซนเซอร์วัดอุณหภูมิกันน้ำ (DS18B20) เพื่อวัดอุณหภูมิและแสดงผล</p>
+      </div>
+     </div>
+     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <div class="project-main">
+       <div class="project-description">
+        <h2>Waterproof Temperature Sensor</h2>
+        <p>Waterproof Temperature Sensor เป็นเซนเซอร์วัดอุณหภูมิที่มีเอาต์พุตแบบดิจิทัล ทนทานต่อน้ำและส่วนแวดล้อม มีความแม่นยำสูง เหมาะสำหรับการวัดอุณหภูมิในสภาพแวดล้อมต่างๆ เช่น น้ำ ดินหรือสภาวะอื่น</p>
+        <div class="led-specs">
+         <h3>✨ คุณสมบัติของ DS18B20</h3>
+         <div class="spec-item">
+          <span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">3.0V - 5.5V</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ช่วงการวัด:</span> <span class="spec-value">-55°C ถึง +125°C</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความแม่นยำ:</span> <span class="spec-value">±0.5°C</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">จำนวนขา:</span> <span class="spec-value">3 ขา (VCC, GND, DATA)</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">โปรโตคอล:</span> <span class="spec-value">1-Wire (Single Wire)</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความต้านทานอ้างอิง:</span> <span class="spec-value">4.7 kΩ (Pull-up)</span>
+         </div>
+        </div>
+        <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">🔧 หลักการทำงาน</h3>
+        <p style="color: #333; background: #f5f5f5; padding: 1rem; border-radius: 6px; line-height: 1.8;">DS18B20 ใช้โปรโตคอล 1-Wire ในการสื่อสารกับ Arduino ซึ่งหมายความว่าต้องใช้เพียงสายเดียวสำหรับการสื่อสาร (นอกเหนือจากสาย VCC และ GND) เซนเซอร์จะส่งค่าอุณหภูมิแบบดิจิทัลที่ Arduino สามารถอ่านและแปลงเป็นอุณหภูมิเป็นองศาเซลเซียสได้ ต้องติดตั้ง Library DallasTemperature ก่อนใช้งาน</p>
+       </div>
+       <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร</h3>
+        <div class="svg-container"><img src="https://img2.pic.in.th/je.webp" alt="Waterproof Temperature Sensor Circuit Diagram" loading="lazy" style="max-width: 100%; height: auto;" onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='Circuit diagram unavailable';">
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.8;"><strong>📍 ขั้นตอนการต่อ DS18B20:</strong><br>
+          1️⃣ ต่อสาย VCC (สีแดง) ไปยัง 5V ของ Arduino<br>
+          2️⃣ ต่อสาย GND (สีดำ) ไปยัง GND ของ Arduino<br>
+          3️⃣ ต่อสาย DATA (สีเหลือง) ไปยัง Pin 2 ของ Arduino<br>
+          4️⃣ ต่อตัวต้านทาน 4.7kΩ ระหว่างสาย DATA และ VCC (Pull-up resistor)</p>
+       </div>
+      </div>
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-bottom: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">📚 ขั้นตอนติดตั้ง Library</h3>
+       <p style="color: #333; line-height: 1.8; margin-bottom: 1.5rem;">ต้องติดตั้ง Library สองตัว ก่อนเขียนโค้ดสำหรับ DS18B20:</p>
+       <ol style="color: #333; line-height: 2; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+        <li><strong>OneWire Library</strong> - ใช้สำหรับสื่อสารด้วยโปรโตคอล 1-Wire</li>
+        <li><strong>DallasTemperature Library</strong> - ใช้สำหรับควบคุม DS18B20</li>
+       </ol>
+       <p style="color: #333; line-height: 1.8; background: #f0f4c3; padding: 1rem; border-radius: 6px;">ดาวน์โหลด Library จาก Google Drive: <a href="https://drive.google.com/drive/folders/1t2k6Lk8Vy3LOA7EEsZ8qawhFPVM9CDXT?usp=sharing" target="_blank" rel="noopener noreferrer" style="color: #0066cc; text-decoration: underline;">คลิกที่นี่เพื่อดาวน์โหลด</a><br><br><strong>วิธีติดตั้ง:</strong><br>
+         1. ดาวน์โหลดไฟล์ .zip<br>
+         2. เปิด Arduino IDE → Sketch → Include Library → Add .ZIP Library<br>
+         3. เลือกไฟล์ OneWire.zip และ DallasTemperature.zip<br>
+         4. คลิก Open เพื่อติดตั้ง</p>
+      </div><!-- Code Section -->
+      <div class="code-section">
+       <div class="code-header">
+        <h2>💻 โค้ดของโปรเจค (Temperature Sensor)</h2><button class="btn-download" onclick="downloadCodeTempSensor()"> <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download</button>
+       </div>
+       <div class="code-viewer">
+        <span class="keyword">#include</span> &lt;OneWire.h&gt;<br><span class="keyword">#include</span> &lt;DallasTemperature.h&gt;<br><br><span class="keyword">const</span> <span class="type">int</span> ONE_WIRE_BUS = <span class="string">2</span>; <span class="comment">//กำหนดขาที่จะเชื่อมต่อ Sensor</span><br>
+         OneWire oneWire(ONE_WIRE_BUS);<br>
+         DallasTemperature sensors(&amp;oneWire);<br><br><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;Serial.<span class="type">begin</span>(<span class="string">9600</span>);<br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Dallas Temperature IC Control Library"</span>);<br>
+         &nbsp;&nbsp;sensors.<span class="type">begin</span>();<br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Requesting temperatures..."</span>);<br>
+         &nbsp;&nbsp;sensors.<span class="type">requestTemperatures</span>(); <span class="comment">//อ่านข้อมูลจาก library</span><br>
+         &nbsp;&nbsp;Serial.<span class="type">print</span>(<span class="string">"Temperature is: "</span>);<br>
+         &nbsp;&nbsp;Serial.<span class="type">print</span>(sensors.<span class="type">getTempCByIndex</span>(<span class="string">0</span>)); <span class="comment">//แสดงค่า อุณหภูมิ</span><br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">" *C"</span>);<br>
+         &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">1000</span>);<br>
+         }
+       </div>
+      </div><!-- How it Works Section -->
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-top: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">⚙️ วิธีการทำงานของโปรแกรม</h3>
+       <ol style="color: #333; line-height: 2; padding-left: 1.5rem;">
+        <li><strong>รวม Library:</strong> รวม OneWire.h และ DallasTemperature.h เพื่อใช้ฟังก์ชันต่างๆ</li>
+        <li><strong>กำหนดขา:</strong> กำหนดขา Pin 2 เป็นสาย DATA ที่จะเชื่อมต่อเซนเซอร์</li>
+        <li><strong>สร้าง Object:</strong> สร้าง OneWire object และ DallasTemperature object</li>
+        <li><strong>อ่านอุณหภูมิ:</strong> ใช้ requestTemperatures() เพื่อสั่งให้เซนเซอร์อ่านอุณหภูมิ</li>
+        <li><strong>แสดงผล:</strong> ใช้ getTempCByIndex(0) เพื่อดึงค่าอุณหภูมิและแสดงไปยัง Serial Monitor</li>
+        <li><strong>เรียกซ้ำ:</strong> รอ 1 วินาที แล้วทำซ้ำตั้งแต่ขั้นที่ 4</li>
+       </ol>
+      </div><!-- Tips Section -->
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f4c3 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; margin-bottom: 3rem;">
+       <h3 style="color: #0066cc; margin-bottom: 1.5rem;">💡 เคล็ดลับและการแก้ไข</h3>
+       <ul style="list-style: none; color: #333; line-height: 2;">
+        <li>✓ <strong>ตรวจสอบ Library:</strong> ให้แน่ใจว่าติดตั้ง OneWire และ DallasTemperature Library แล้ว</li>
+        <li>✓ <strong>ดูค่าจริง:</strong> เปิด Serial Monitor (Ctrl+Shift+M) เพื่อดูค่าอุณหภูมิ</li>
+        <li>✓ <strong>ตรวจสอบการต่อวงจร:</strong> ตรวจสอบให้แน่ใจว่าต่อ Pull-up resistor 4.7kΩ ระหว่าง DATA และ VCC</li>
+        <li>✓ <strong>ปรับ Pin:</strong> เปลี่ยนค่า ONE_WIRE_BUS เป็น Pin ที่ต้องการ (เช่น 3, 4, 5 เป็นต้น)</li>
+        <li>✓ <strong>ควบคุม LED:</strong> เพิ่ม digitalWrite() เพื่อปิด-เปิด LED ตามอุณหภูมิ</li>
+        <li>✓ <strong>แสดงแบบ Fahrenheit:</strong> ใช้ getTempFByIndex(0) แทน getTempCByIndex(0)</li>
+        <li>✓ <strong>โปรเจคขั้นสูง:</strong> เพิ่มการแจ้งเตือนเมื่ออุณหภูมิสูงกว่าหรือต่ำกว่าค่าที่กำหนด</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- Water Level Sensor Project Page -->
+    <div id="project-water-level" class="project-detail page">
+     <div class="project-header">
+      <div style="max-width: 1200px; margin: 0 auto;"><a class="back-button" onclick="goHome()"> <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก </a>
+       <h1>Water Level Sensor</h1>
+       <p>ใช้เซนเซอร์วัดระดับน้ำเพื่อตรวจจับและควบคุม LED </p>
+      </div>
+     </div>
+     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <div class="project-main">
+       <div class="project-description">
+        <h2>Water Level Sensor</h2>
+        <p>Water Level Sensor เป็นเซนเซอร์ที่ใช้วัดระดับน้ำในภาชนะหรือ tank โดยใช้หลักการวัดการนำไฟฟ้า (conductivity) เซนเซอร์ประกอบด้วยหลายขา contact ที่มีความสูงต่างกัน เมื่อน้ำสัมผัสขาไหนก็จะทำให้ค่าแรงดันไฟฟ้าเปลี่ยนแปลง เหมาะสำหรับการตรวจจับระดับน้ำและควบคุมระบบอัตโนมัติ</p>
+        <div class="led-specs">
+         <h3>✨ คุณสมบัติของ Water Level Sensor</h3>
+         <div class="spec-item">
+          <span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">5V DC</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ค่าอ่าน (Analog):</span> <span class="spec-value">0-1023</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">จำนวนขา Sensor:</span> <span class="spec-value">6-10 ขา (ตามระดับน้ำ)</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความสูง:</span> <span class="spec-value">ประมาณ 10 ซม.</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">ความต้านทาน:</span> <span class="spec-value">ขึ้นอยู่กับระดับน้ำ</span>
+         </div>
+         <div class="spec-item">
+          <span class="spec-label">สถานะเอาต์พุต:</span> <span class="spec-value">Analog (ต่างตามระดับน้ำ)</span>
+         </div>
+        </div>
+        <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">🔧 หลักการทำงาน</h3>
+        <p style="color: #333; background: #f5f5f5; padding: 1rem; border-radius: 6px; line-height: 1.8;">Water Level Sensor ทำงานโดยการอ่านค่าแรงดันไฟฟ้าผ่าน Analog Pin บน Arduino ค่าที่อ่านจะเป็น 0-1023 ขึ้นอยู่กับระดับน้ำในภาชนะ เมื่อน้ำสูงค่าจะสูง เมื่อน้ำต่ำค่าจะต่ำ เหมาะสำหรับสร้างระบบสิ่งแจ้งเตือนระดับน้ำหรือระบบควบคุมการสูบน้ำอัตโนมัติ</p>
+       </div>
+       <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร</h3>
+        <div class="svg-container"><img src="https://img2.pic.in.th/connection-of-water-level-sensor-with-arduino.webp" alt="connection of water level sensor with arduino" border="0">
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.8;"><strong>📍 ขั้นตอนการต่อ Water Level Sensor:</strong><br>
+          1️⃣ ต่อ Signal (S) ของเซนเซอร์ไปยัง A0 (Analog Pin) ของ Arduino<br>
+          2️⃣ ต่อ VCC ของเซนเซอร์ไปยัง 5V ของ Arduino<br>
+          3️⃣ ต่อ GND ของเซนเซอร์ไปยัง GND ของ Arduino<br><br><strong>📍 ขั้นตอนการต่อ LED:</strong><br>
+          1️⃣ ต่อ Pin 6 ไปยังตัวต้านทาน 220Ω<br>
+          2️⃣ ต่อปลายตัวต้านทานไปยังขาสีแดงของ LED<br>
+          3️⃣ ต่อขาสีดำของ LED ไปยัง GND</p>
+       </div>
+      </div>
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-bottom: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">📊 ความหมายของค่าเซนเซอร์</h3>
+       <div style="background: #d4f1f9; padding: 2rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 4px solid #87ceeb;">
+        <h4 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.1rem;">📈 การตีความค่า Analog (0-1023)</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+         <div style="background: white; padding: 1rem; border-radius: 6px; border-left: 4px solid #e74c3c;">
+          <h5 style="color: #e74c3c; margin-bottom: 0.5rem; font-weight: 600;">🔴 ค่า 0-200</h5>
+          <p style="color: #333; font-size: 0.95rem; line-height: 1.6;"><strong>Empty (ว่าง)</strong><br>
+           ไม่มีน้ำ หรือระดับน้ำต่ำมากที่สุด</p>
+         </div>
+         <div style="background: white; padding: 1rem; border-radius: 6px; border-left: 4px solid #f39c12;">
+          <h5 style="color: #f39c12; margin-bottom: 0.5rem; font-weight: 600;">🟠 ค่า 200-500</h5>
+          <p style="color: #333; font-size: 0.95rem; line-height: 1.6;"><strong>Low (ต่ำ)</strong><br>
+           ระดับน้ำต่ำ ยังไม่ถึง 1/4 ของภาชนะ</p>
+         </div>
+         <div style="background: white; padding: 1rem; border-radius: 6px; border-left: 4px solid #3498db;">
+          <h5 style="color: #3498db; margin-bottom: 0.5rem; font-weight: 600;">🔵 ค่า 500-750</h5>
+          <p style="color: #333; font-size: 0.95rem; line-height: 1.6;"><strong>Medium (ปานกลาง)</strong><br>
+           ระดับน้ำปานกลาง ประมาณ 1/2 ของภาชนะ</p>
+         </div>
+         <div style="background: white; padding: 1rem; border-radius: 6px; border-left: 4px solid #27ae60;">
+          <h5 style="color: #27ae60; margin-bottom: 0.5rem; font-weight: 600;">🟢 ค่า 750-1023</h5>
+          <p style="color: #333; font-size: 0.95rem; line-height: 1.6;"><strong>High/Full (สูง/เต็ม)</strong><br>
+           ระดับน้ำสูง หรือเต็มภาชนะแล้ว</p>
+         </div>
+        </div>
+       </div>
+       <div style="background: #fff3cd; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #ffc107;">
+        <h5 style="color: #856404; margin-bottom: 1rem; font-weight: 600;">⚠️ หมายเหตุสำคัญ</h5>
+        <ul style="color: #333; line-height: 1.8; margin-left: 1.5rem;">
+         <li><strong>ค่าอาจแตกต่างกัน:</strong> ค่าที่แสดงอาจแตกต่างจากค่าที่บอกไว้ ขึ้นอยู่กับชนิดของเซนเซอร์และความบริสุทธิ์ของน้ำ</li>
+         <li><strong>ควรทำการทดสอบโดย:</strong> ใช้ Serial Monitor ดูค่าจริงจากภาชนะของคุณ แล้วปรับค่า threshold ให้เหมาะสม</li>
+         <li><strong>ทำความสะอาด:</strong> ทำความสะอาดเซนเซอร์เป็นระยะ เพื่อให้การอ่านค่าแม่นยำ</li>
+        </ul>
+       </div>
+      </div><!-- Code Section -->
+      <div class="code-section">
+       <div class="code-header">
+        <h2>💻 โค้ดของโปรเจค (Water Level Sensor + LED)</h2><button class="btn-download" onclick="downloadCodeWaterLevel()"> <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download </button>
+       </div>
+       <div class="code-viewer">
+        <span class="keyword">const</span> <span class="type">int</span> ledPin = <span class="string">6</span>; <span class="comment">//LED pin</span><br><span class="keyword">int</span> sensor = <span class="string">A0</span>; <span class="comment">//Water level sensor pin</span><br><span class="keyword">int</span> level = <span class="string">0</span>;<br><br><span class="keyword">void</span> <span class="type">setup</span>() {<br>
+         &nbsp;&nbsp;<span class="type">pinMode</span>(ledPin, OUTPUT); <span class="comment">//LED as output</span><br>
+         &nbsp;&nbsp;Serial.<span class="type">begin</span>(<span class="string">9600</span>);<br>
+         }<br><br><span class="keyword">void</span> <span class="type">loop</span>() {<br>
+         &nbsp;&nbsp;level = <span class="type">analogRead</span>(sensor); <span class="comment">//read water level value (0-1023)</span><br>
+         &nbsp;&nbsp;Serial.<span class="type">println</span>(level);<br><br>
+         &nbsp;&nbsp;<span class="keyword">if</span>(level &gt; <span class="string">500</span>){ <span class="comment">//if water level is high</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, HIGH); <span class="comment">//turn LED on</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Water Level is HIGH - LED ON"</span>);<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">delay</span>(<span class="string">1000</span>);<br>
+         &nbsp;&nbsp;}<br>
+         &nbsp;&nbsp;<span class="keyword">else</span>{<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">digitalWrite</span>(ledPin, LOW); <span class="comment">//turn LED off</span><br>
+         &nbsp;&nbsp;&nbsp;&nbsp;Serial.<span class="type">println</span>(<span class="string">"Water Level is LOW - LED OFF"</span>);<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">delay</span>(<span class="string">1000</span>);<br>
+         &nbsp;&nbsp;}<br>
+         }
+       </div>
+      </div><!-- How it Works Section -->
+      <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-top: 2rem;">
+       <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">⚙️ วิธีการทำงานของโปรแกรม</h3>
+       <ol style="color: #333; line-height: 2; padding-left: 1.5rem;">
+        <li><strong>อ่านค่า Water Level:</strong> ใช้ analogRead() เพื่ออ่านค่าระดับน้ำ (0-1023)</li>
+        <li><strong>เก็บค่า:</strong> เก็บค่าที่อ่านไว้ในตัวแปร level</li>
+        <li><strong>ตรวจสอบเงื่อนไข:</strong> ถ้า level &gt; 500 (ระดับน้ำสูง) → LED ON | ถ้า ≤ 500 (ระดับน้ำต่ำ) → LED OFF</li>
+        <li><strong>ควบคุม LED:</strong> ใช้ digitalWrite() เพื่อเปิด-ปิด LED</li>
+        <li><strong>แสดงผล:</strong> ส่งค่าและข้อมูลสถานะไปยัง Serial Monitor เพื่อดูแบบเรียลไทม์</li>
+        <li><strong>เรียกซ้ำ:</strong> รอ 1 วินาที แล้วทำซ้ำตั้งแต่ขั้นที่ 1</li>
+       </ol>
+      </div><!-- Tips Section -->
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f4c3 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; margin-bottom: 3rem;">
+       <h3 style="color: #0066cc; margin-bottom: 1.5rem;">💡 เคล็ดลับและการแก้ไข</h3>
+       <ul style="list-style: none; color: #333; line-height: 2;">
+        <li>✓ <strong>ดูค่าจริง:</strong> เปิด Serial Monitor (Ctrl+Shift+M) เพื่อดูค่าระดับน้ำแบบเรียลไทม์</li>
+        <li>✓ <strong>ใช้ Serial Plotter:</strong> เพื่อดูกราฟการเปลี่ยนแปลงระดับน้ำ</li>
+        <li>✓ <strong>เซนเซอร์วัดผิด?</strong> ตรวจสอบให้แน่ใจว่าเซนเซอร์ไม่มีสนิม ลองเทน้ำบริสุทธิ์และลองใหม่</li>
+        <li>✓ <strong>ระดับน้ำหลายขั้น:</strong> ใช้ if-else หลายชั้นเพื่อตรวจจับระดับต่าง ๆ (ต่ำ ปานกลาง สูง)</li>
+        <li>✓ <strong>เพิ่มเสียง Buzzer:</strong> เพิ่มเสียงเตือนเมื่อระดับน้ำเกินหรือต่ำกว่าที่กำหนด</li>
+        <li>✓ <strong>โปรเจคขั้นสูง:</strong> สร้างระบบควบคุมการสูบน้ำอัตโนมัติหรือระบบสิ่งแจ้งเตือน</li>
+        <li>✓ <strong>บันทึกข้อมูล:</strong> บันทึกค่าระดับน้ำไปยัง SD Card เพื่อเก็บข้อมูล</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+
+   <div id="project-buzzer" class="project-detail page">
+      <div class="project-header">
+        <div style="max-width: 1200px; margin: 0 auto;">
+          <a class="back-button" onclick="goHome()"> 
+            <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก 
+          </a>
+          <h1>Buzzer Sound</h1>
+          <p>เรียนรู้วิธีการควบคุมเสียงสัญญาณแจ้งเตือนด้วย Buzzer</p>
+        </div>
+      </div>
+
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <div class="project-main">
+          <div class="project-description">
+            <h2>Buzzer</h2>
+            <p>Buzzer เป็นอุปกรณ์ที่ใช้สำหรับสร้างเสียงในโปรเจค Arduino โดยในบทเรียนนี้เราจะเรียนรู้วิธีการส่งสัญญาณเพื่อให้เกิดเสียง</p>
+            
+            <div class="led-specs">
+              <h3>✨ คุณสมบัติของ Buzzer</h3>
+              <div class="spec-item"><span class="spec-label">แรงดันไฟฟ้า:</span> <span class="spec-value">3.3V - 5V</span></div>
+              <div class="spec-item"><span class="spec-label">ประเภท:</span> <span class="spec-value">Active / Passive</span></div>
+              <div class="spec-item"><span class="spec-label">ขาสัญญาณ (+):</span> <span class="spec-value">สายสีแดง / ขายาว</span></div>
+              <div class="spec-item"><span class="spec-label">ขากราวด์ (-):</span> <span class="spec-value">สายสีดำ / ขาสั้น</span></div>
+            </div>
+
+            <h3 style="color: #0066cc; margin-top: 1.5rem; margin-bottom: 0.75rem;">📍 ข้อเตือน</h3>
+            <p style="color: #d32f2f; background: #ffebee; padding: 1rem; border-radius: 6px;">⚠️ Buzzer มีขั้วบวกและขั้วลบ หากต่อสลับขั้วจะไม่มีเสียงเกิดขึ้น และห้ามต่อตรงกับแหล่งจ่ายไฟที่แรงดันสูงเกินไป</p>
+          </div>
+
+          <div class="circuit-diagram">
+            <h3>🔌 การต่อวงจร</h3>
+            <div class="svg-container">
+              <img src="https://img1.pic.in.th/images/buzzer-1.png" alt="Buzzer Circuit" style="max-width: 100%; height: auto;">
+            </div>
+            <p style="color: #666; margin-top: 1rem; font-size: 0.9rem; line-height: 1.6;">
+              <strong>ขั้นตอนการต่อ:</strong><br>
+              1. ต่อขากราวด์ (-) ของ Buzzer เข้ากับช่อง GND ของ Arduino<br>
+              2. ต่อขาสัญญาณ (+) ของ Buzzer เข้ากับ Pin 8 ของ Arduino
+            </p>
+          </div>
+        </div>
+
+        <div class="code-section">
+          <div class="code-header">
+            <h2>💻 โค้ดโปรแกรม (Tone)</h2>
+            <button class="btn-download" onclick="downloadCodeBuzzer()"> 
+              <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download 
+            </button>
+          </div>
+          <div class="code-viewer">
+            <span class="keyword">void</span> <span class="type">setup</span>() {<br>
+            &nbsp;&nbsp;<span class="type">pinMode</span>(<span class="string">8</span>, OUTPUT); <span class="comment">// ตั้งค่า Pin 8 เป็น Output</span><br>
+            }<br><br>
+            <span class="keyword">void</span> <span class="type">loop</span>() {<br>
+            &nbsp;&nbsp;<span class="type">tone</span>(<span class="string">8</span>, <span class="string">1000</span>); <span class="comment">// ส่งเสียงความถี่ 1000Hz ที่ขา 8</span><br>
+            &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">500</span>);<br>
+            &nbsp;&nbsp;<span class="type">noTone</span>(<span class="string">8</span>); <span class="comment">// หยุดส่งเสียง</span><br>
+            &nbsp;&nbsp;<span class="type">delay</span>(<span class="string">500</span>);<br>
+            }
+          </div>
+        </div>
+
+        <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(135, 206, 235, 0.15); margin-top: 2rem; margin-bottom: 3rem;">
+          <h3 style="color: #2c7aa0; margin-bottom: 1.5rem; font-size: 1.2rem;">⚙️ วิธีการทำงาน</h3>
+          <ol style="color: #333; line-height: 2; padding-left: 1.5rem;">
+            <li><strong>tone(pin, freq):</strong> เป็นฟังก์ชันสร้างเสียงตามความถี่ที่ระบุ</li>
+            <li><strong>noTone(pin):</strong> ใช้สำหรับหยุดการส่งสัญญาณเสียง</li>
+            <li><strong>การหน่วงเวลา:</strong> กำหนดความยาวของเสียงและช่วงจังหวะหยุด</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Motor Project Page -->
+<div id="project-motor" class="project-detail page">
+  <div class="project-header">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <a class="back-button" onclick="goHome()"> 
+        <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก 
+      </a>
+      <h1>DC Motor & L293D Control</h1>
+      <p>เจาะลึกการควบคุมมอเตอร์กระแสตรงด้วย IC Driver มาตรฐาน</p>
+    </div>
+  </div>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+      
+      <div class="project-description" style="margin: 0;">
+        <h2 style="color: #2563eb; border-left: 5px solid #2563eb; padding-left: 10px;">IC L293D Driver</h2>
+        <p>L293D คือไอซีขับมอเตอร์แบบ <strong>H-Bridge</strong> ที่ออกแบบมาเพื่อควบคุมทิศทางและกระแสไฟฟ้า ช่วยป้องกันความเสียหายที่อาจเกิดขึ้นกับบอร์ดไมโครคอนโทรลเลอร์จากการดึงกระแสเกินของมอเตอร์</p>
+        
+        <div class="led-specs" style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-top: 1rem;">
+          <h3 style="margin-top: 0;">🔍 ข้อมูลทางเทคนิค</h3>
+          <div class="spec-item"><span class="spec-label">แรงดันการทำงาน:</span> <span class="spec-value">4.5V - 36V DC</span></div>
+          <div class="spec-item"><span class="spec-label">กระแสขับต่อเนื่อง:</span> <span class="spec-value">600mA / ช่อง</span></div>
+          <div class="spec-item"><span class="spec-label">กระแสขับสูงสุด:</span> <span class="spec-value">1.2A (Peak)</span></div>
+          <div class="spec-item"><span class="spec-label">ขาสัญญาณ:</span> <span class="spec-value">รองรับ PWM (Speed Control)</span></div>
+          <div class="spec-item"><span class="spec-label">อุณหภูมิใช้งาน:</span> <span class="spec-value">0°C to 70°C</span></div>
+        </div>
+      </div>
+
+      <div class="circuit-diagram" style="margin: 0; display: flex; flex-direction: column; justify-content: center;">
+        <h3 style="text-align: center; margin-bottom: 10px;">📍 Pin Diagram of L293D</h3>
+        <div style="background: white; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+          <img src="https://img1.pic.in.th/images/Pin-Diagram-of-L293D-IC.jpg" alt="L293D Pinout" style="width: 100%; height: auto; border-radius: 4px;">
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; margin-bottom: 2rem; align-items: start;">
+      
+      <div class="table-section">
+        <h3 style="margin-bottom: 15px;">📋 Wiring Connection Table</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; background: white;">
+          <thead style="background: #2563eb; color: white;">
+            <tr>
+              <th style="padding: 10px; border: 1px solid #ddd;">L293D Pin</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Connect To</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">1 (Enable 1)</td><td style="padding: 8px; border: 1px solid #ddd;">Pin 10 (PWM)</td><td style="padding: 8px; border: 1px solid #ddd;">ความเร็วพัดลม</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">2 (Input 1)</td><td style="padding: 8px; border: 1px solid #ddd;">Pin 9</td><td style="padding: 8px; border: 1px solid #ddd;">คุมทิศทาง A</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">3 (Output 1)</td><td style="padding: 8px; border: 1px solid #ddd;">Motor Leg 1</td><td style="padding: 8px; border: 1px solid #ddd;">ไฟออกมอเตอร์</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">4, 5, 12, 13</td><td style="padding: 8px; border: 1px solid #ddd;">GND</td><td style="padding: 8px; border: 1px solid #ddd;">กราวด์ร่วม</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">8 (VCC2)</td><td style="padding: 8px; border: 1px solid #ddd;">External Batt</td><td style="padding: 8px; border: 1px solid #ddd;">ไฟเลี้ยงมอเตอร์</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">16 (VCC1)</td><td style="padding: 8px; border: 1px solid #ddd;">Arduino 5V</td><td style="padding: 8px; border: 1px solid #ddd;">ไฟเลี้ยงชิป</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="circuit-diagram" style="margin: 0;">
+        <h3 style="text-align: center; margin-bottom: 15px;">🔌 Full Circuit</h3>
+        <img src="https://img2.pic.in.th/Fan.png" alt="Fan Circuit" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+      </div>
+    </div>
+
+    <div class="code-section" style="margin-bottom: 3rem;">
+      <div class="code-header">
+        <h2>💻 Arduino Source Code (Speed Control)</h2>
+        <button class="btn-download" onclick="downloadCodeMotor()"> 
+          <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download
+        </button>
+      </div>
+      <div class="code-viewer" style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 0 0 12px 12px; font-family: 'Courier New', Courier, monospace;">
+        <span style="color: #94a3b8;">// กำหนดขาสัญญาณ</span><br>
+        <span class="keyword" style="color: #f472b6;">const int</span> enA = <span class="string" style="color: #38bdf8;">10</span>; <br>
+        <span class="keyword" style="color: #f472b6;">const int</span> in1 = <span class="string" style="color: #38bdf8;">9</span>; <br><br>
+        <span class="keyword" style="color: #f472b6;">void</span> <span class="type" style="color: #fbbf24;">setup</span>() {<br>
+        &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">pinMode</span>(enA, OUTPUT);<br>
+        &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">pinMode</span>(in1, OUTPUT);<br>
+        }<br><br>
+        <span class="keyword" style="color: #f472b6;">void</span> <span class="type" style="color: #fbbf24;">loop</span>() {<br>
+        &nbsp;&nbsp;<span style="color: #94a3b8;">// สั่งหมุนด้วยความเร็ว 75%</span><br>
+        &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">digitalWrite</span>(in1, HIGH);<br>
+        &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">analogWrite</span>(enA, <span class="string" style="color: #38bdf8;">200</span>); <br>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- water Pump -->
+    <div id="project-pump" class="project-detail page">
+  <div class="project-header">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <a class="back-button" onclick="goHome()"> 
+        <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก 
+      </a>
+      <h1>Water Pump Control</h1>
+      <p>การควบคุมปั๊มน้ำขนาดเล็กโดยใช้ IC Motor Driver L293D</p>
+    </div>
+  </div>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+    <div class="project-main">
+      <div class="project-description">
+        <h2>Water Pump ทำงานร่วมกับ IC L293D</h2>
+        <p>L293D เป็น IC ขับมอเตอร์แบบ H-Bridge ที่สามารถขับกระแสได้สูงสุด 600mA ต่อช่องสัญญาณ เหมาะสำหรับปั๊มน้ำขนาดเล็กที่ต้องการการควบคุมที่แม่นยำกว่าการใช้ Relay</p>
+        
+        <div class="led-specs">
+          <h3>✨ การต่อขา IC L293D</h3>
+          <div class="spec-item"><span class="spec-label">Pin 1 (Enable 1):</span> <span class="spec-value">ต่อ 5V (หรือขา PWM เพื่อปรับความเร็ว)</span></div>
+          <div class="spec-item"><span class="spec-label">Pin 2 (Input 1):</span> <span class="spec-value">ต่อ Digital Pin 9</span></div>
+          <div class="spec-item"><span class="spec-label">Pin 3,6 (Output):</span> <span class="spec-value">ต่อขั้วบวกของปั๊มน้ำ</span></div>
+          <div class="spec-item"><span class="spec-label">Pin 4, 5, 12, 13 (GND):</span> <span class="spec-value">ต่อ Ground</span></div>
+          <div class="spec-item"><span class="spec-label">Pin 8 (VCC2):</span> <span class="spec-value">ต่อไฟเลี้ยงมอเตอร์ (3-12V)</span></div>
+          <div class="spec-item"><span class="spec-label">ขาลบปั๊มน้ำ:</span> <span class="spec-value">ต่อ Output 2 (หรือ GND หากหมุนทางเดียว)</span></div>
+        </div>
+
+        <h3 style="color: #0066cc; margin-top: 1.5rem;">🌟 ข้อดีของการใช้ L293D</h3>
+        <p>ช่วยป้องกันสัญญาณรบกวนและกระแสย้อนกลับจากมอเตอร์ไม่ให้ไหลเข้าบอร์ด Arduino และสามารถสั่งเริ่มหรือหยุดมอเตอร์ได้อย่างนุ่มนวล</p>
+      </div>
+
+      <div class="circuit-diagram">
+        <h3>🔌 การต่อวงจร (L293D + Water Pump)</h3>
+        <div class="svg-container">
+          <a href="https://pic.in.th/image/Fan.UaBacy" target="_blank">
+            <img src="https://img2.pic.in.th/Fan.png" alt="Water Pump Circuit" style="max-width: 100%; height: auto; border-radius: 8px;">
+          </a>
+        </div>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem;">
+          *ในแผนผังเป็นการเชื่อมต่อผ่านขา IN1 เพื่อควบคุมการทำงาน*
+        </p>
+      </div>
+    </div>
+
+    <div class="code-section" style="margin-bottom: 3rem;">
+      <div class="code-header">
+        <h2>💻 โค้ดโปรแกรม</h2>
+        <button class="btn-download" onclick="downloadCodePumpL293D()"> 
+          <i data-lucide="download" style="width: 20px; height: 20px;"></i> Download
+        </button>
+      </div>
+      <div class="code-viewer">
+        <span class="keyword">int</span> IN1 = <span class="string">9</span>; <span class="comment">// ต่อเข้าขา 2 ของ L293D</span><br><br>
+        <span class="keyword">void</span> <span class="type">setup</span>() {<br>
+        &nbsp;&nbsp;<span class="type">pinMode</span>(IN1, OUTPUT);<br>
+        }<br><br>
+        <span class="keyword">void</span> <span class="type">loop</span>() {<br>
+        &nbsp;&nbsp;<span class="type">digitalWrite</span>(IN1, HIGH); <span class="comment">// ปั๊มน้ำทำงาน</span><br>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+   <script>
+    // Element SDK Configuration
+    const defaultConfig = {
+      site_title: 'Fun with Arduino',
+      hero_title: 'ยินดีต้อนรับสู่ Fun with Arduino',
+      hero_description: 'เรียนรู้การใช้งานไมโครคอนโทรลเลอร์ Arduino จากศูนย์รวมความรู้ที่ออกแบบมาเพื่อมือใหม่ เริ่มตั้งแต่พื้นฐาน ไปจนถึงโปรเจคจริง',
+      section1_title: 'ทำความรู้จัก Arduino',
+      section2_title: 'การใช้งานเบื้องต้น',
+      section3_title: 'Project',
+      section4_title: 'ใบกิจกรรม',
+      footer_credit: 'by Wawwan Chanchuklin'
+    };
+
+    let config = { ...defaultConfig };
+
+    async function initializeElementSdk() {
+      if (!window.elementSdk) return;
+
+      await window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = newConfig;
+          document.getElementById('site-title').textContent = config.site_title || defaultConfig.site_title;
+          document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+          document.getElementById('hero-description').textContent = config.hero_description || defaultConfig.hero_description;
+          document.getElementById('section1-title').textContent = config.section1_title || defaultConfig.section1_title;
+          document.getElementById('section2-title').textContent = config.section2_title || defaultConfig.section2_title;
+          document.getElementById('section3-title').textContent = config.section3_title || defaultConfig.section3_title;
+          document.getElementById('section4-title').textContent = config.section4_title || defaultConfig.section4_title;
+          document.getElementById('footer-credit').innerHTML = config.footer_credit || defaultConfig.footer_credit;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['site_title', config.site_title || defaultConfig.site_title],
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_description', config.hero_description || defaultConfig.hero_description],
+          ['section1_title', config.section1_title || defaultConfig.section1_title],
+          ['section2_title', config.section2_title || defaultConfig.section2_title],
+          ['section3_title', config.section3_title || defaultConfig.section3_title],
+          ['section4_title', config.section4_title || defaultConfig.section4_title],
+          ['footer_credit', config.footer_credit || defaultConfig.footer_credit]
+        ])
+      });
+    }
+
+    // Navigation functions
+// ตัวแปรสำหรับเก็บตำแหน่งการเลื่อนหน้าจอ
+let lastScrollPosition = 0;
+
+// แก้ไขฟังก์ชันสำหรับเข้าหน้าโปรเจ็ค
+function goToProject(projectId) {
+    // 1. เก็บตำแหน่งปัจจุบันไว้ก่อนเปลี่ยนหน้า
+    lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+    // 2. ซ่อนหน้าหลัก
+    const homePage = document.getElementById('home-page');
+    if (homePage) homePage.classList.remove('active');
+
+    // 3. แสดงหน้าโปรเจ็คที่เลือก
+    const targetPage = document.getElementById('project-' + projectId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        
+        // แสดงปุ่มลอยเมื่อเข้าหน้าโปรเจ็ค (ถ้าคุณเพิ่มปุ่มลอยไว้)
+        const floatingBtn = document.getElementById('floating-home-btn');
+        if (floatingBtn) floatingBtn.classList.add('show-floating-btn');
+        
+        // เลื่อนหน้าโปรเจ็คขึ้นไปด้านบนสุด
+        window.scrollTo(0, 0);
+    }
+}
+
+// แก้ไขฟังก์ชันกลับหน้าหลัก
+function goHome() {
+    // 1. ซ่อนทุกหน้าที่เป็นคลาส 'page' (ป้องกันหน้าโปรเจ็คค้าง)
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => page.classList.remove('active'));
+
+    // 2. แสดงหน้า Home
+    const homePage = document.getElementById('home-page');
+    if (homePage) {
+        homePage.classList.add('active');
+        
+        // 3. เลื่อนกลับไปที่ตำแหน่งเดิมที่เคยอยู่
+        window.scrollTo({
+            top: lastScrollPosition,
+            behavior: 'smooth' // เลื่อนแบบนุ่มนวล
+        });
+    }
+
+    // 4. ซ่อนปุ่มลอย (ถ้ามี)
+    const floatingBtn = document.getElementById('floating-home-btn');
+    if (floatingBtn) floatingBtn.classList.remove('show-floating-btn');
+}
+
+    function scrollToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+
+    //Download Water Pump
+    function downloadCodePumpL293D() {
+  // กำหนดเนื้อหาของไฟล์ .ino
+  const code = `// โปรเจกต์ควบคุมปั๊มน้ำด้วย IC L293D
+int IN1 = 9; // ต่อเข้าขา 2 ของ IC L293D
+
+void setup() {
+  // กำหนดให้ขา 9 เป็นโหมดส่งสัญญาณออก
+  pinMode(IN1, OUTPUT);
+}
+
+void loop() {
+  // สั่งให้มอเตอร์ปั๊มน้ำทำงาน (ส่งสัญญาณ HIGH)
+  digitalWrite(IN1, HIGH);
+}`;
+
+  try {
+    // สร้าง Blob สำหรับข้อมูลข้อความ
+    const blob = new Blob([code], { type: 'text/plain' });
+    
+    // สร้าง URL ชั่วคราวสำหรับ Blob
+    const url = window.URL.createObjectURL(blob);
+    
+    // สร้าง Element <a> เพื่อใช้ในการจำลองการคลิกดาวน์โหลด
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Water_Pump_L293D.ino'; // ชื่อไฟล์ที่จะปรากฏเมื่อโหลด
+    
+    // เพิ่มเข้าในหน้าเว็บชั่วคราวและสั่งคลิก
+    document.body.appendChild(link);
+    link.click();
+    
+    // ลบ Element และคืนค่าหน่วยความจำ
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error('ไม่สามารถดาวน์โหลดไฟล์ได้:', err);
+  }
+}
+
+
+    // Download Buzzer code
+    function downloadCodeBuzzer() {
+      const code = `int buzzerPin = 8; // กำหนดขา Buzzer ที่ต่อกับ Digital Pin 8
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT); // ตั้งค่าขา buzzer เป็น OUTPUT
+}
+
+void loop() {
+  // แบบที่ 1: ใช้ tone() เพื่อสร้างเสียงความถี่ 1000Hz
+  tone(buzzerPin, 1000); 
+  delay(500);          // ส่งเสียงนาน 0.5 วินาที
+  
+  // หยุดส่งเสียง
+  noTone(buzzerPin);   
+  delay(500);          // เงียบ 0.5 วินาที
+  
+  // แบบที่ 2: ไล่ระดับเสียง (ตัวอย่าง)
+  for(int freq = 500; freq <= 1500; freq += 10) {
+    tone(buzzerPin, freq);
+    delay(10);
+  }
+  noTone(buzzerPin);
+  delay(1000);
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'Buzzer_Sound_Project.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+
+    // Download Arduino code
+    function downloadCode() {
+      const code = `const int ledPin = 10;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH);
+  Serial.println("LED is ON");
+  delay(1000);
+  digitalWrite(ledPin, LOW);
+  Serial.println("LED is OFF");
+  delay(1000);
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'Blink_LED.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+    //download code motor
+    function downloadCodeMotor() {
+  const code = `int IN1 = 9;
+
+void setup() {
+  pinMode(IN1, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(IN1, HIGH);
+}`;
+
+  try {
+    const encodedCode = new TextEncoder().encode(code);
+    const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'DC_Motor_Fan.ino');
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 100);
+  } catch (error) {
+    console.error('Download failed:', error);
+  }
+}
+
+    // Download LDR + LED code
+    function downloadCodeLDRLED() {
+      const code = `const int ledPin = 10;
+const int ldrPin = A0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+  pinMode(ldrPin, INPUT);
+}
+
+void loop() {
+  int ldrValue = analogRead(ldrPin);
+  Serial.print("Light Value: ");
+  Serial.println(ldrValue);
+
+  if (ldrValue <= 100) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("LDR is DARK, LED is ON");
+  } else {
+    digitalWrite(ledPin, LOW);
+    Serial.println("It's BRIGHT, LED is OFF");
+  }
+
+  delay(500);
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'LDR_LED_Automatic.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+    // Download Switch + LED code
+    function downloadCodeSwitch() {
+      const code = `int buttonState = 0;
+int LedPin = 13;
+int buttonPin = 2;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(buttonPin, INPUT);
+  pinMode(LedPin, OUTPUT);
+}
+
+void loop() {
+  // read the state of the pushbutton value
+  buttonState = digitalRead(buttonPin);
+  // check if pushbutton is pressed. if it is, the buttonState is HIGH
+  if (buttonState == HIGH) {
+    // turn LED on
+    digitalWrite(LedPin, HIGH);
+    Serial.println("Button Pressed - LED ON");
+  } else {
+    // turn LED off
+    digitalWrite(LedPin, LOW);
+    Serial.println("Button Released - LED OFF");
+  }
+  delay(10);
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'Switch_LED_Control.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+    // Download PIR + LED code
+    function downloadCodePIR() {
+      const code = `int pirPin = 13;    // the pin connected to OUT of PIR
+int ledPin = 10;   // the pin connected to LED
+int pirValue;      // variable to store the value from PIR
+
+void setup() {
+  Serial.begin(9600); // open Serial Monitor
+  pinMode(ledPin, OUTPUT);
+  pinMode(pirPin, INPUT);
+}
+
+void loop() {
+  pirValue = digitalRead(pirPin); // read value from PIR (HIGH/LOW)
+  if (pirValue == HIGH) { // if motion detected
+    digitalWrite(ledPin, HIGH); // turn LED on
+    Serial.println("Motion detected!");
+  } else {
+    digitalWrite(ledPin, LOW); // turn LED off
+    Serial.println("Motion ended.");
+  }
+  delay(1000); // slight delay
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'PIR_LED_Motion_Detection.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+    // Download Ultrasonic + LED code
+    function downloadCodeUltrasonic() {
+      const code = `const int trigPin = 2;
+const int echoPin = 3;
+const int ledPin = 10;
+long duration;
+int distance;
+
+void setup() {
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Clear Trig pin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  
+  // Send sound wave (10 microseconds)
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  // Read value from Echo pin
+  duration = pulseIn(echoPin, HIGH);
+  
+  // Calculate distance
+  distance = duration * 0.034 / 2;
+  
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  
+  if(distance < 50){
+    digitalWrite(ledPin, HIGH);
+  }
+  else{
+    digitalWrite(ledPin, LOW);
+  }
+  delay(100);
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'Ultrasonic_LED_Distance_Sensor.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+    // Download Temperature Sensor code
+    function downloadCodeTempSensor() {
+      const code = `#include <OneWire.h>
+#include <DallasTemperature.h>
+
+const int ONE_WIRE_BUS = 2; //กำหนดขาที่จะเชื่อมต่อ Sensor
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+void setup(void) {
+  Serial.begin(9600);
+  Serial.println("Dallas Temperature IC Control Library");
+  sensors.begin();
+}
+
+void loop(void) {
+  Serial.println("Requesting temperatures...");
+  sensors.requestTemperatures(); //อ่านข้อมูลจาก library
+  Serial.print("Temperature is: ");
+  Serial.print(sensors.getTempCByIndex(0)); // แสดงค่า อุณหภูมิ
+  Serial.println(" *C");
+  delay(1000);
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'Waterproof_Temperature_Sensor.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+    // Download Water Level Sensor code
+    function downloadCodeWaterLevel() {
+      const code = `const int ledPin = 10;
+int sensor = A0;
+int level = 0;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  level = analogRead(sensor);
+  Serial.println(level);
+  
+  if(level > 500){
+    digitalWrite(ledPin, HIGH);
+    Serial.println("Water Level is HIGH - LED ON");
+    delay(1000);
+  }
+  else{
+    digitalWrite(ledPin, LOW);
+    Serial.println("Water Level is LOW - LED OFF");
+    delay(1000);
+  }
+}`;
+
+      try {
+        const encodedCode = new TextEncoder().encode(code);
+        const blob = new Blob([encodedCode], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'Water_Level_Sensor.ino');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      lucide.createIcons();
+      await initializeElementSdk();
+    });
+
+    // Reinitialize icons when needed
+    setTimeout(() => lucide.createIcons(), 100);
+  </script>
+  </div>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f76116a82018343',t:'MTc3ODA1MDQwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<button onclick="goHome()" id="floating-home-btn" class="fixed bottom-6 right-6 z-[1000] bg-sky-400 text-white p-4 rounded-full shadow-lg hover:bg-sky-500 transition-all active:scale-95 hidden items-center justify-center border-none cursor-pointer">
+  <i data-lucide="home" class="w-6 h-6"></i>
+</button>
+</body>
+</html>
