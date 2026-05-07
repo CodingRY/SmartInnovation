@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUPP Innovation - Starter Projects</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --primary-theme: #A7C7E7;    /* ฟ้าพาสเทล */
+            --canva-theme: #FFB7B2;      /* ชมพูพาสเทล */
+            --bg-pastel: #FDFCF0;        /* เหลืองนวลพาสเทล */
+            --text-dark: #5D5D5D;
+            --white: #ffffff;
+            --home-btn: #B2E2F2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-pastel);
+            background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Header Section --- */
+        header {
+            padding: 0.8rem 1.5rem;
+            background: var(--white);
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-theme), var(--canva-theme));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        h1 {
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4A4A4A;
+        }
+
+        .btn-home {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--home-btn);
+            color: #4A4A4A;
+            text-decoration: none;
+            border-radius: 12px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* --- Main Content Section --- */
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viewer-container {
+            width: 100%;
+            max-width: 1100px;
+            height: 100%;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border: 6px solid white;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        /* --- Floating Action Button --- */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 24px;
+            background: var(--canva-theme);
+            color: white;
+            text-decoration: none;
+            font-family: 'Kanit', sans-serif;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(255, 183, 178, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.05) translateY(-5px);
+            filter: brightness(1.05);
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 0.8rem 1rem; }
+            h1 { font-size: 0.9rem; }
+            .viewer-container { height: 85vh; padding: 6px; }
+            .fab { padding: 10px 18px; font-size: 0.85rem; bottom: 20px; right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo-box">
+            <i data-lucide="rocket" size="18"></i>
+        </div>
+        <h1>Starter Projects</h1>
+    </div>
+
+    <div style="display: flex; gap: 10px;"> 
+        <a href="Expo.html" class="btn-home" style="background-color: #FFB7B2; color: #5D5D5D;">
+            <i data-lucide="lightbulb" size="18"></i>
+            TUPP Innovation Expo
+        </a>
+
+        <a href="index.html" class="btn-home">
+            <i data-lucide="home" size="18"></i>
+            หน้าหลัก
+        </a>
+    </div>
+</header>
+
+    <main>
+        <div class="viewer-container">
+            <iframe 
+                src="https://www.canva.com/design/DAHI_gJngAo/EDXB8vAinjph00kyeWeoWw/view?embed" 
+                allowfullscreen="allowfullscreen" 
+                allow="fullscreen"
+                loading="lazy">
+            </iframe>
+        </div>
+    </main>
+
+    <a href="https://canva.link/xgc61msqng70b4q" target="_blank" class="fab">
+        <i data-lucide="external-link" size="20"></i>
+        <span>เปิดผลงานขนาดเต็ม</span>
+    </a>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
