@@ -42,38 +42,59 @@
       z-index: 100;
     }
 
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    /* --- ส่วน Header ที่ปรับปรุงใหม่ --- */
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem; /* ลด padding บนมือถือ */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* ให้เมนูลงมาบรรทัดใหม่ได้ถ้าที่จำกัด */
+}
 
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: white;
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      cursor: pointer;
-    }
+.logo-section {
+  font-size: 1.2rem; /* ลดขนาดตัวอักษรโลโก้บนมือถือ */
+  white-space: nowrap;
+}
 
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      color: #ffffff;
-    }
+.nav-menu {
+  display: flex;
+  gap: 1rem; /* ลดระยะห่างระหว่างเมนู */
+  list-style: none;
+}
 
-    .nav-menu {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
+/* --- ส่วนที่ทำให้ Banner เต็มจอเสมอ --- */
+.hero img {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* รักษาอัตราส่วนภาพ */
+}
+
+/* --- Media Queries สำหรับมือถือ --- */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column; /* จัดโลโก้กับเมนูให้อยู่คนละบรรทัด */
+    gap: 10px;
+    padding: 1rem;
+  }
+
+  .nav-menu {
+    display: flex; /* บังคับให้แสดงเมนู */
+    gap: 0.8rem;
+    justify-content: center;
+    width: 100%;
+    padding: 0;
+  }
+
+  .nav-menu a {
+    font-size: 0.85rem; /* ลดขนาดฟอนต์เมนูให้พอดีหน้าจอ */
+  }
+
+  .logo-section span {
+    font-size: 1.1rem; /* ปรับชื่อเว็บให้เล็กลงเพื่อไม่ให้ล้น */
+  }
+}
 
     .nav-menu a {
       text-decoration: none;
@@ -545,17 +566,23 @@ p, li {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-    <div class="header-content"><a class="logo-section" onclick="goHome()"> <i data-lucide="cpu" class="logo-icon"></i> <span id="site-title">Smart Innovation Challenge</span> </a>
-     <nav>
+    <header class="header">
+  <div class="header-content">
+    <a class="logo-section" onclick="goHome()">
+      <i data-lucide="cpu" class="logo-icon"></i>
+      <span id="site-title">Smart Innovation Challenge</span>
+    </a>
+    <nav>
       <ul class="nav-menu">
-       <li><a onclick="goHome(); scrollToSection('section1')" class="nav-link">ทำความรู้จัก Arduino</a></li>
-       <li><a onclick="goHome(); scrollToSection('section2')" class="nav-link">การใช้งานเบื้องต้น</a></li>
-       <li><a onclick="goHome(); scrollToSection('section3')" class="nav-link">Project</a></li>
-       <li><a href="workSheet.html" class="nav-link">ใบกิจกรรม</a></li>
+        <li><a onclick="goHome(); scrollToSection('section1')">รู้จัก Arduino</a></li>
+        <li><a onclick="goHome(); scrollToSection('section2')">การใช้งาน</a></li>
+        <li><a onclick="goHome(); scrollToSection('section3')">Project</a></li>
+        <li><a href="workSheet.html">ใบกิจกรรม</a></li>
       </ul>
-     </nav>
-    </div>
-   </header><!-- Main Content -->
+    </nav>
+  </div>
+</header>
+
    <div class="content"><!-- Home Page -->
     <div id="home-page" class="page active">
      <!-- Hero Section with Banner -->
@@ -712,6 +739,18 @@ p, li {
        </div>
 
      </section>
+
+  
+    <section class="section" id="section4" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-bottom: none; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 4rem 2rem;">
+    <h2 id="section4-title" style="color: #2c7aa0; font-size: 2.5rem; margin-bottom: 1rem;">ใบกิจกรรมการเรียนรู้</h2>
+  
+    <div style="display: flex; justify-content: center;">
+    <a href="workSheet.html" class="btn-start" style="display: inline-flex; align-items: center; gap: 0.8rem; padding: 1.2rem 3rem; font-size: 1.3rem; text-decoration: none;">
+    <i data-lucide="file-text"></i>
+      เข้าสู่หน้าใบกิจกรรม
+    </a>
+  </div>
+</section>
 
 
 
