@@ -1613,7 +1613,7 @@ p, li {
       <a class="back-button" onclick="goHome()"> 
         <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i> กลับไปหน้าหลัก 
       </a>
-      <h1>DC Motor & L293D Control</h1>
+      <h1>DC Motor พัดลมขนาดเล็ก</h1>
       <p>เจาะลึกการควบคุมมอเตอร์กระแสตรงด้วย IC Driver มาตรฐาน</p>
     </div>
   </div>
@@ -1656,9 +1656,10 @@ p, li {
             </tr>
           </thead>
           <tbody>
-            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">1 (Enable 1)</td><td style="padding: 8px; border: 1px solid #ddd;">Pin 10 (PWM)</td><td style="padding: 8px; border: 1px solid #ddd;">ความเร็วพัดลม</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">1 (Enable 1)</td><td style="padding: 8px; border: 1px solid #ddd;">VCC</td><td style="padding: 8px; border: 1px solid #ddd;">ความเร็วพัดลม</td></tr>
             <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">2 (Input 1)</td><td style="padding: 8px; border: 1px solid #ddd;">Pin 9</td><td style="padding: 8px; border: 1px solid #ddd;">คุมทิศทาง A</td></tr>
             <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">3 (Output 1)</td><td style="padding: 8px; border: 1px solid #ddd;">Motor Leg 1</td><td style="padding: 8px; border: 1px solid #ddd;">ไฟออกมอเตอร์</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">6 (Output 2)</td><td style="padding: 8px; border: 1px solid #ddd;">Motor Leg 2</td><td style="padding: 8px; border: 1px solid #ddd;">ไฟออกมอเตอร์</td></tr>
             <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">4, 5, 12, 13</td><td style="padding: 8px; border: 1px solid #ddd;">GND</td><td style="padding: 8px; border: 1px solid #ddd;">กราวด์ร่วม</td></tr>
             <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">8 (VCC2)</td><td style="padding: 8px; border: 1px solid #ddd;">External Batt</td><td style="padding: 8px; border: 1px solid #ddd;">ไฟเลี้ยงมอเตอร์</td></tr>
             <tr><td style="padding: 8px; border: 1px solid #ddd; text-align: center;">16 (VCC1)</td><td style="padding: 8px; border: 1px solid #ddd;">Arduino 5V</td><td style="padding: 8px; border: 1px solid #ddd;">ไฟเลี้ยงชิป</td></tr>
@@ -1681,16 +1682,12 @@ p, li {
       </div>
       <div class="code-viewer" style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 0 0 12px 12px; font-family: 'Courier New', Courier, monospace;">
         <span style="color: #94a3b8;">// กำหนดขาสัญญาณ</span><br>
-        <span class="keyword" style="color: #f472b6;">const int</span> enA = <span class="string" style="color: #38bdf8;">10</span>; <br>
         <span class="keyword" style="color: #f472b6;">const int</span> in1 = <span class="string" style="color: #38bdf8;">9</span>; <br><br>
         <span class="keyword" style="color: #f472b6;">void</span> <span class="type" style="color: #fbbf24;">setup</span>() {<br>
-        &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">pinMode</span>(enA, OUTPUT);<br>
         &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">pinMode</span>(in1, OUTPUT);<br>
         }<br><br>
         <span class="keyword" style="color: #f472b6;">void</span> <span class="type" style="color: #fbbf24;">loop</span>() {<br>
-        &nbsp;&nbsp;<span style="color: #94a3b8;">// สั่งหมุนด้วยความเร็ว 75%</span><br>
         &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">digitalWrite</span>(in1, HIGH);<br>
-        &nbsp;&nbsp;<span class="type" style="color: #fbbf24;">analogWrite</span>(enA, <span class="string" style="color: #38bdf8;">200</span>); <br>
         }
       </div>
     </div>
