@@ -46,16 +46,32 @@
 .header-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0.5rem 1rem; /* ลด padding บนมือถือ */
+  padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap; /* ให้เมนูลงมาบรรทัดใหม่ได้ถ้าที่จำกัด */
+  gap: 10px;
 }
 
 .logo-section {
-  font-size: 1.2rem; /* ลดขนาดตัวอักษรโลโก้บนมือถือ */
-  white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.8rem; /* เพิ่มขนาดตัวอักษร */
+    font-weight: 800;  /* ปรับให้หนาพิเศษ */
+    letter-spacing: -0.5px;
+}
+.logo-section span {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
+    text-transform: uppercase; /* ปรับเป็นตัวพิมพ์ใหญ่ทั้งหมดเพื่อความยิ่งใหญ่ */
+    font-family: 'Arial Black', sans-serif; /* ใช้ฟอนต์ที่ดูแข็งแรง */
+}
+.logo-section svg {
+    color: #1e3a8a;
+    filter: drop-shadow(0px 2px 4px rgba(59, 130, 246, 0.5));
 }
 
 .nav-menu {
@@ -71,45 +87,81 @@
   object-fit: cover; /* รักษาอัตราส่วนภาพ */
 }
 
-/* --- Media Queries สำหรับมือถือ --- */
+/* --- Media Queries สำหรับมือถือ (ปรับจากของเดิม) --- */
 @media (max-width: 768px) {
+  /* 1. บังคับให้ส่วน Header ยืดหยุ่น ไม่ซ้อนทับกัน */
   .header-content {
-    flex-direction: column; /* จัดโลโก้กับเมนูให้อยู่คนละบรรทัด */
-    gap: 10px;
-    padding: 1rem;
+    flex-direction: column; 
+    padding: 1rem 0.5rem;
+    gap: 12px;
   }
 
+  /* 2. บังคับให้เมนูแสดงผล (สำคัญมาก: ป้องกัน display: none) */
   .nav-menu {
-    display: flex; /* บังคับให้แสดงเมนู */
-    gap: 0.8rem;
+    display: flex !important; /* บังคับให้แสดงผลแม้จะมีคำสั่งอื่นสั่งซ่อน */
+    flex-wrap: wrap; 
     justify-content: center;
+    gap: 8px;
     width: 100%;
     padding: 0;
   }
 
+  /* 3. ปรับสีและขนาดตัวอักษรเมนูให้เด่นชัดบนมือถือ */
   .nav-menu a {
-    font-size: 0.85rem; /* ลดขนาดฟอนต์เมนูให้พอดีหน้าจอ */
+    display: block;
+    font-size: 0.85rem; 
+    color: #2c5aa0 !important; /* เปลี่ยนเป็นสีเข้มเพื่อให้ตัดกับพื้นหลังฟ้าอ่อน */
+    background: rgba(255, 255, 255, 0.5); /* เพิ่มพื้นหลังขาวจางๆ ให้ปุ่มดูชัดขึ้น */
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-shadow: none; /* เอาเงาออกเพื่อให้ตัวอักษรคมชัด */
   }
 
-  .logo-section span {
-    font-size: 1.1rem; /* ปรับชื่อเว็บให้เล็กลงเพื่อไม่ให้ล้น */
+  /* 4. ปรับโลโก้/ชื่อเว็บไม่ให้เบียดเมนู */
+  .logo-section {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+  }
+}
+/* --- ปรับปรุง Grid และ Layout --- */
+@media (max-width: 768px) {
+  /* หน้าแรก */
+  .hero h1 { font-size: 1.6rem; }
+  .section { padding: 2rem 1rem; }
+  .section h2 { font-size: 1.5rem; }
+  
+  /* หน้ารายละเอียดโปรเจค */
+  .project-header h1 { font-size: 1.8rem; }
+  
+  .project-main {
+    display: flex;
+    flex-direction: column; /* เปลี่ยนจาก 2 คอลัมน์เป็นแนวตั้ง */
+    gap: 1.5rem;
+  }
+
+  .code-viewer {
+    font-size: 0.75rem; /* ลดขนาดโค้ดเพื่อให้อ่านง่ายไม่ต้องไถข้างเยอะ */
+    padding: 1rem;
+  }
+
+  /* ปรับตารางในหน้า Motor ให้ไถข้างได้ (Horizontal Scroll) */
+  .table-section {
+    overflow-x: auto;
+    display: block;
+  }
+  
+  table {
+    min-width: 500px; /* บังคับความกว้างตารางขั้นต่ำเพื่อให้ข้อมูลไม่เบียด */
+  }
+
+  /* ปรับรูปภาพวงจร */
+  .svg-container {
+    min-height: auto;
+    padding: 0.5rem;
   }
 }
 
-    .nav-menu a {
-      text-decoration: none;
-      color: white;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-
-    .nav-menu a:hover,
-    .nav-menu a.active {
-      color: #ffffff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    }
 
     /* Hero Section */
     .hero {
